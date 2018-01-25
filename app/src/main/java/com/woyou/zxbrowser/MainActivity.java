@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements IWebEventListener
         mBinding.webview.setWebEventListener(this);
         mBinding.floatButton.setOnClickListener((view) -> {
             mBinding.webview.evaluateJavascript(
-                    "JSON.stringify(performance.timing).toString();", value -> {
+                    "console.log(JSON.stringify(performance.timing));", value -> {
                         Timing timing = Timing.fromJson(value);
                         Toast.makeText(this, String.valueOf(timing.getT1()), Toast.LENGTH_SHORT).show();
                     }

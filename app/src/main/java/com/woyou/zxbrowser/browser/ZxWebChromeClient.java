@@ -27,4 +27,9 @@ public class ZxWebChromeClient extends WebChromeClient {
     public void setWebEventListener(IWebEventListener webEventListener) {
         mWebEventListener = webEventListener;
     }
+
+    @Override
+    public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+        return super.onConsoleMessage(consoleMessage);
+    }
 }
