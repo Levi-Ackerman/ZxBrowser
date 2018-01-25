@@ -1,7 +1,6 @@
 package com.woyou.zxbrowser;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +11,7 @@ import android.widget.Toast;
 
 import com.woyou.zxbrowser.browser.IWebEventListener;
 import com.woyou.zxbrowser.databinding.ActivityMainBinding;
+import com.woyou.zxbrowser.model.Timing;
 
 public class MainActivity extends AppCompatActivity implements IWebEventListener {
 
@@ -26,7 +26,14 @@ public class MainActivity extends AppCompatActivity implements IWebEventListener
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mBinding.btnLoad.setOnClickListener((view) -> mBinding.webview.loadUrl(mBinding.addressBar.getText().toString()));
         mBinding.webview.setWebEventListener(this);
-        mBinding.floatButton.setOnClickListener((view) -> Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show());
+        mBinding.floatButton.setOnClickListener((view) -> {
+            mBinding.webview.evaluateJavascript(
+                    "JSON.stringify(performance.timing).toString();", value -> {
+                        Timing timing = Timing.fromJson(value);
+                        Toast.makeText(this, String.valueOf(timing.getT1()), Toast.LENGTH_SHORT).show();
+                    }
+            );
+        });
     }
 
     @Override
@@ -37,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements IWebEventListener
             new AlertDialog.Builder(this)
                     .setMessage("确认退出？")
                     .setPositiveButton("确定", (dialog, which) -> MainActivity.super.onBackPressed())
-                    .setNegativeButton("取消",null)
+                    .setNegativeButton("取消", null)
                     .show();
         }
     }

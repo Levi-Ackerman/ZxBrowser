@@ -32,7 +32,6 @@ public class ZxWebViewClient extends WebViewClient {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-        Log.e("lee..UrlLoading",System.currentTimeMillis()+"");
         return shouldOverrideUrlLoading(view, request.getUrl().toString());
     }
 
@@ -47,7 +46,6 @@ public class ZxWebViewClient extends WebViewClient {
 
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
-        Log.e("lee..onPageStart",System.currentTimeMillis()+"");
         super.onPageStarted(view, url, favicon);
         if (mWebEventListener != null){
             mWebEventListener.onPageStarted(view,url);
@@ -72,7 +70,6 @@ public class ZxWebViewClient extends WebViewClient {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onPageFinished(WebView view, String url) {
-        Log.e("lee..onPageFinish",System.currentTimeMillis()+"");
         super.onPageFinished(view, url);
         if (mWebEventListener!=null){
             mWebEventListener.onPageFinished(view,url);
