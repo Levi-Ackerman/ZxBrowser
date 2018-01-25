@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.webkit.ValueCallback;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -59,9 +60,16 @@ public class ZxWebViewClient extends WebViewClient {
         super.onReceivedHttpError(view, request, errorResponse);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onPageFinished(WebView view, String url) {
         Log.e("lee..onPageFinish",System.currentTimeMillis()+"");
         super.onPageFinished(view, url);
+        view.evaluateJavascript("'hello'", new ValueCallback<String>() {
+            @Override
+            public void onReceiveValue(String value) {
+                Log.i("lee..",value);
+            }
+        });
     }
 }

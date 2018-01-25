@@ -1,21 +1,12 @@
 package com.woyou.zxbrowser;
 
-import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
 import android.os.Build;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.ViewGroup;
+import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.LinearLayout;
 
-import com.woyou.zxbrowser.browser.ZxWebView;
 import com.woyou.zxbrowser.databinding.ActivityMainBinding;
-
-import java.util.HashSet;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,8 +18,9 @@ public class MainActivity extends AppCompatActivity {
             WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG);
         }
         mBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
-        mBinding.webview.loadUrl("https://www.baidu.com");
-        mBinding.webview.stopLoading();
+        mBinding.btnLoad.setOnClickListener((view)->{
+            mBinding.webview.loadUrl(mBinding.addressBar.getText().toString());
+        });
     }
 
     @Override

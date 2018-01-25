@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.woyou.zxbrowser2"
+        applicationId "com.woyou.zxbrowser"
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
@@ -20,6 +20,10 @@ android {
         enabled true
     }
     buildToolsVersion '26.0.2'
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
