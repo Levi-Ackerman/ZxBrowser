@@ -1,5 +1,7 @@
 package com.woyou.zxbrowser;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,7 +34,11 @@ public class MainActivity extends AppCompatActivity implements IWebEventListener
         if (mBinding.webview.canGoBack()) {
             mBinding.webview.goBack();
         } else {
-            super.onBackPressed();
+            new AlertDialog.Builder(this)
+                    .setMessage("确认退出？")
+                    .setPositiveButton("确定", (dialog, which) -> MainActivity.super.onBackPressed())
+                    .setNegativeButton("取消",null)
+                    .show();
         }
     }
 
