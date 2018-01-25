@@ -8,4 +8,6 @@ import android.webkit.WebView;
 
 public interface IWebEventListener {
     void onPageFinished(WebView webView, String url);
+
+    void onPageStarted(WebView webView, String url);
 }

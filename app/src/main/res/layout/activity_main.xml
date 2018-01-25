@@ -8,13 +8,13 @@
         android:layout_height="match_parent">
 
         <EditText
-            android:text="http://www.baidu.com"
             android:id="@+id/address_bar"
-            android:singleLine="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/btn_load"
-            android:layout_toStartOf="@+id/btn_load"/>
+            android:layout_toStartOf="@+id/btn_load"
+            android:singleLine="true"
+            android:text="http://www.baidu.com"/>
 
         <Button
             android:id="@+id/btn_load"
@@ -29,6 +29,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/address_bar"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/float_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="16dp"
+            android:src="@android:drawable/btn_plus"/>
 
     </RelativeLayout>
 </layout>
