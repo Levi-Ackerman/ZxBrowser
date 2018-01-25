@@ -2,6 +2,7 @@ package com.woyou.zxbrowser.browser;
 
 import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 
 /**
  * ************************************************************
@@ -18,8 +19,9 @@ public class ZxWebChromeClient extends WebChromeClient {
     private IWebEventListener mWebEventListener;
 
     @Override
-    public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-        return super.onConsoleMessage(consoleMessage);
+    public void onProgressChanged(WebView view, int newProgress) {
+        super.onProgressChanged(view, newProgress);
+        mWebEventListener.onProgressChanged(view,newProgress);
     }
 
     public void setWebEventListener(IWebEventListener webEventListener) {

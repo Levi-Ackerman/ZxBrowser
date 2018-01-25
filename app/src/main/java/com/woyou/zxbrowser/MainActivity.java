@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.webkit.WebView;
 import android.widget.Toast;
 
@@ -38,10 +39,16 @@ public class MainActivity extends AppCompatActivity implements IWebEventListener
     @Override
     public void onPageFinished(WebView webView, String url) {
         mBinding.addressBar.setText(url);
+        mBinding.progressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void onPageStarted(WebView webView, String url) {
-        
+        mBinding.progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onProgressChanged(WebView view, int newProgress) {
+        mBinding.progressBar.setProgress(newProgress);
     }
 }

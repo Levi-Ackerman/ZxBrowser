@@ -10,4 +10,6 @@ public interface IWebEventListener {
     void onPageFinished(WebView webView, String url);
 
     void onPageStarted(WebView webView, String url);
+
+    void onProgressChanged(WebView view, int newProgress);
 }

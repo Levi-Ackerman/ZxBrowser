@@ -49,6 +49,9 @@ public class ZxWebViewClient extends WebViewClient {
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         Log.e("lee..onPageStart",System.currentTimeMillis()+"");
         super.onPageStarted(view, url, favicon);
+        if (mWebEventListener != null){
+            mWebEventListener.onPageStarted(view,url);
+        }
     }
 
     @Override
