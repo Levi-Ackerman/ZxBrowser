@@ -15,8 +15,14 @@ import android.webkit.WebChromeClient;
  */
 
 public class ZxWebChromeClient extends WebChromeClient {
+    private IWebEventListener mWebEventListener;
+
     @Override
     public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
         return super.onConsoleMessage(consoleMessage);
+    }
+
+    public void setWebEventListener(IWebEventListener webEventListener) {
+        mWebEventListener = webEventListener;
     }
 }

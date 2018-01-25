@@ -6,9 +6,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
 
+import com.woyou.zxbrowser.browser.IWebEventListener;
 import com.woyou.zxbrowser.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements IWebEventListener{
 
     private ActivityMainBinding mBinding;
     @Override
@@ -18,9 +19,7 @@ public class MainActivity extends AppCompatActivity {
             WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG);
         }
         mBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
-        mBinding.btnLoad.setOnClickListener((view)->{
-            mBinding.webview.loadUrl(mBinding.addressBar.getText().toString());
-        });
+        mBinding.btnLoad.setOnClickListener((view)-> mBinding.webview.loadUrl(mBinding.addressBar.getText().toString()));
     }
 
     @Override
@@ -30,5 +29,10 @@ public class MainActivity extends AppCompatActivity {
         }else{
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onPageFinished(WebView webView, String url) {
+        mBinding.addressBar.setText(url);
     }
 }

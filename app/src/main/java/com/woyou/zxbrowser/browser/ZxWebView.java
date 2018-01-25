@@ -19,6 +19,9 @@ import junit.runner.Version;
  */
 
 public class ZxWebView extends WebView {
+    private String UA = "Mozilla/5.0 (Linux; Android %s; %s Build/NMF26X; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/63.0.3239.107 Mobile Safari/537.36";
+    private ZxWebChromeClient mChromeClient;
+    private ZxWebViewClient mWebViewClient;
     public ZxWebView(Context context) {
         super(context);
         init();
@@ -34,19 +37,25 @@ public class ZxWebView extends WebView {
         init();
     }
 
-    private String UA = "Mozilla/5.0 (Linux; Android %s; %s Build/NMF26X; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/63.0.3239.107 Mobile Safari/537.36";
 
     private void init() {
         getSettings().setJavaScriptEnabled(true);
 //        getSettings().setUseWideViewPort(false);
 //        getSettings().setLoadWithOverviewMode(true);
-        getSettings().setUserAgentString(String.format(UA, Build.VERSION.RELEASE, Build.MODEL));
-        setWebChromeClient(new ZxWebChromeClient());
-        setWebViewClient(new ZxWebViewClient());
+//        getSettings().setUserAgentString(String.format(UA, Build.VERSION.RELEASE, Build.MODEL));
+        mChromeClient = new ZxWebChromeClient();
+        mWebViewClient = new ZxWebViewClient();
+        setWebChromeClient(mChromeClient);
+        setWebViewClient(mWebViewClient);
     }
 
     @Override
     public void loadUrl(String url) {
         super.loadUrl(url);
+    }
+
+    public void setWebEventListener(IWebEventListener webEventListener) {
+        mChromeClient.setWebEventListener(webEventListener);
+        mWebViewClient.setWebEventListener(webEventListener);
     }
 }

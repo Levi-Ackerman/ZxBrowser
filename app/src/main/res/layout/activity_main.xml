@@ -8,6 +8,7 @@
         android:layout_height="match_parent">
 
         <EditText
+            android:text="http://www.baidu.com"
             android:id="@+id/address_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

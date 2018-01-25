@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.webkit.ConsoleMessage;
 import android.webkit.ValueCallback;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -23,6 +24,11 @@ import android.webkit.WebViewClient;
  */
 
 public class ZxWebViewClient extends WebViewClient {
+    private IWebEventListener mWebEventListener;
+
+    public void setWebEventListener(IWebEventListener webEventListener) {
+        mWebEventListener = webEventListener;
+    }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
@@ -65,11 +71,8 @@ public class ZxWebViewClient extends WebViewClient {
     public void onPageFinished(WebView view, String url) {
         Log.e("lee..onPageFinish",System.currentTimeMillis()+"");
         super.onPageFinished(view, url);
-        view.evaluateJavascript("'hello'", new ValueCallback<String>() {
-            @Override
-            public void onReceiveValue(String value) {
-                Log.i("lee..",value);
-            }
-        });
+        if (mWebEventListener!=null){
+            mWebEventListener.onPageFinished(view,url);
+        }
     }
 }
