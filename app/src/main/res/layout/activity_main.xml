@@ -10,6 +10,7 @@
         <EditText
             android:text="http://www.baidu.com"
             android:id="@+id/address_bar"
+            android:singleLine="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/btn_load"

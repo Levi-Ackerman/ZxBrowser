@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements IWebEventListener
         }
         mBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
         mBinding.btnLoad.setOnClickListener((view)-> mBinding.webview.loadUrl(mBinding.addressBar.getText().toString()));
+        mBinding.webview.setWebEventListener(this);
     }
 
     @Override
