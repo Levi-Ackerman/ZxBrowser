@@ -7,11 +7,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.webkit.WebView;
-import android.widget.Toast;
 
 import com.woyou.zxbrowser.browser.IWebEventListener;
 import com.woyou.zxbrowser.databinding.ActivityMainBinding;
-import com.woyou.zxbrowser.model.Timing;
 
 public class MainActivity extends AppCompatActivity implements IWebEventListener {
 
@@ -26,14 +24,8 @@ public class MainActivity extends AppCompatActivity implements IWebEventListener
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mBinding.btnLoad.setOnClickListener((view) -> mBinding.webview.loadUrl(mBinding.addressBar.getText().toString()));
         mBinding.webview.setWebEventListener(this);
-        mBinding.floatButton.setOnClickListener((view) -> {
-            mBinding.webview.evaluateJavascript(
-                    "console.log(JSON.stringify(performance.timing));", value -> {
-                        Timing timing = Timing.fromJson(value);
-                        Toast.makeText(this, String.valueOf(timing.getT1()), Toast.LENGTH_SHORT).show();
-                    }
-            );
-        });
+        mBinding.floatButton.setOnClickListener((view) -> mBinding.webview.evaluateJavascript(
+                "prompt(JSON.stringify(performance.timing),'timing');", null));
     }
 
     @Override

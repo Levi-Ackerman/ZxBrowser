@@ -1,8 +1,13 @@
 package com.woyou.zxbrowser.browser;
 
+import android.util.Log;
 import android.webkit.ConsoleMessage;
+import android.webkit.JsPromptResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+
+import com.google.gson.Gson;
+import com.woyou.zxbrowser.model.Timing;
 
 /**
  * ************************************************************
@@ -24,8 +29,17 @@ public class ZxWebChromeClient extends WebChromeClient {
         mWebEventListener.onProgressChanged(view,newProgress);
     }
 
-    public void setWebEventListener(IWebEventListener webEventListener) {
+    void setWebEventListener(IWebEventListener webEventListener) {
         mWebEventListener = webEventListener;
+    }
+
+    @Override
+    public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
+        if ("timing".equals(defaultValue)){
+            Timing timing = new Gson().fromJson(message,Timing.class);
+            Log.e("lee..",timing.getT1()+"");
+        }
+        return super.onJsPrompt(view, url, message, defaultValue, result);
     }
 
     @Override

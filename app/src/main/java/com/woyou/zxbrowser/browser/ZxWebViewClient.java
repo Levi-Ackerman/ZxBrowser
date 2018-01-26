@@ -47,6 +47,8 @@ public class ZxWebViewClient extends WebViewClient {
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         super.onPageStarted(view, url, favicon);
+        view.getSettings().setBlockNetworkImage(true);
+        view.getSettings().setLoadsImagesAutomatically(false);
         if (mWebEventListener != null){
             mWebEventListener.onPageStarted(view,url);
         }
@@ -71,6 +73,8 @@ public class ZxWebViewClient extends WebViewClient {
     @Override
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
+        view.getSettings().setBlockNetworkImage(false);
+        view.getSettings().setLoadsImagesAutomatically(true);
         if (mWebEventListener!=null){
             mWebEventListener.onPageFinished(view,url);
         }
