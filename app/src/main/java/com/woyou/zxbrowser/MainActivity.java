@@ -9,10 +9,12 @@ import android.view.View;
 import android.webkit.WebView;
 
 import com.woyou.zxbrowser.browser.IWebEventListener;
+import com.woyou.zxbrowser.common.Const;
 import com.woyou.zxbrowser.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity implements IWebEventListener {
 
+    public static final String TIMING_SCRIPT = "prompt(JSON.stringify(performance.timing),'"+ Const.JS_PROMPT_PREFIX+"');";
     private ActivityMainBinding mBinding;
 
     @Override
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements IWebEventListener
         mBinding.btnLoad.setOnClickListener((view) -> mBinding.webview.loadUrl(mBinding.addressBar.getText().toString()));
         mBinding.webview.setWebEventListener(this);
         mBinding.floatButton.setOnClickListener((view) -> mBinding.webview.evaluateJavascript(
-                "prompt(JSON.stringify(performance.timing),'timing');", null));
+                TIMING_SCRIPT, null));
     }
 
     @Override
