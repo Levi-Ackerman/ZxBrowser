@@ -1,14 +1,14 @@
 package com.woyou.zxbrowser.browser;
 
-import android.util.Log;
 import android.webkit.ConsoleMessage;
 import android.webkit.JsPromptResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
-import com.google.gson.Gson;
-import com.woyou.zxbrowser.common.Const;
 import com.woyou.zxbrowser.model.Timing;
+import com.woyou.zxbrowser.model.WebViewPerform;
+import com.woyou.zxbrowser.util.GsonUtil;
+import com.woyou.zxbrowser.util.OrmUtil;
 
 /**
  * ************************************************************
@@ -36,11 +36,11 @@ public class ZxWebChromeClient extends WebChromeClient {
 
     @Override
     public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
-        if (Const.JS_PROMPT_PREFIX.equals(defaultValue)){
-            Timing timing = new Gson().fromJson(message,Timing.class);
-            if (timing!=null){
-                timing.getT1();
-            }
+        if (WebViewConst.JS_PROMPT_PREFIX.equals(defaultValue)){
+            Timing timing = GsonUtil.inst().fromJson(message,Timing.class);
+            OrmUtil.getOrm().save(new WebViewPerform(url, timing));
+            result.cancel();
+            return true;
         }
         return super.onJsPrompt(view, url, message, defaultValue, result);
     }

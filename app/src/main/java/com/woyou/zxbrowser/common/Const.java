@@ -5,5 +5,4 @@ package com.woyou.zxbrowser.common;
  */
 
 public class Const {
-    public static final String JS_PROMPT_PREFIX = "zx_prompt:";
 }

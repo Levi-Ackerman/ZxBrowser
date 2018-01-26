@@ -14,7 +14,6 @@ import com.woyou.zxbrowser.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity implements IWebEventListener {
 
-    public static final String TIMING_SCRIPT = "prompt(JSON.stringify(performance.timing),'"+ Const.JS_PROMPT_PREFIX+"');";
     private ActivityMainBinding mBinding;
 
     @Override
@@ -26,8 +25,6 @@ public class MainActivity extends AppCompatActivity implements IWebEventListener
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mBinding.btnLoad.setOnClickListener((view) -> mBinding.webview.loadUrl(mBinding.addressBar.getText().toString()));
         mBinding.webview.setWebEventListener(this);
-        mBinding.floatButton.setOnClickListener((view) -> mBinding.webview.evaluateJavascript(
-                TIMING_SCRIPT, null));
     }
 
     @Override

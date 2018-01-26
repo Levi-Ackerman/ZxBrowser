@@ -1,6 +1,8 @@
 package com.woyou.zxbrowser.browser;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
@@ -11,6 +13,8 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import static com.woyou.zxbrowser.browser.WebViewConst.TIMING_SCRIPT;
 
 /**
  * ************************************************************
@@ -29,6 +33,7 @@ public class ZxWebViewClient extends WebViewClient {
     public void setWebEventListener(IWebEventListener webEventListener) {
         mWebEventListener = webEventListener;
     }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
@@ -38,19 +43,24 @@ public class ZxWebViewClient extends WebViewClient {
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         if (url.startsWith("http")) {
-//            view.loadUrl(url);
             return false;
+        } else {
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                view.getContext().startActivity(intent);
+            } catch (Exception ignored) {
+            }
+            return true;
         }
-        return true;
     }
 
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         super.onPageStarted(view, url, favicon);
-        view.getSettings().setBlockNetworkImage(true);
-        view.getSettings().setLoadsImagesAutomatically(false);
-        if (mWebEventListener != null){
-            mWebEventListener.onPageStarted(view,url);
+//        view.getSettings().setBlockNetworkImage(true);
+//        view.getSettings().setLoadsImagesAutomatically(false);
+        if (mWebEventListener != null) {
+            mWebEventListener.onPageStarted(view, url);
         }
     }
 
@@ -73,10 +83,11 @@ public class ZxWebViewClient extends WebViewClient {
     @Override
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
-        view.getSettings().setBlockNetworkImage(false);
-        view.getSettings().setLoadsImagesAutomatically(true);
-        if (mWebEventListener!=null){
-            mWebEventListener.onPageFinished(view,url);
+//        view.getSettings().setBlockNetworkImage(false);
+//        view.getSettings().setLoadsImagesAutomatically(true);
+        if (mWebEventListener != null) {
+            mWebEventListener.onPageFinished(view, url);
         }
+        view.loadUrl(TIMING_SCRIPT);
     }
 }

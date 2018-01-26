@@ -2,6 +2,8 @@ package com.woyou.zxbrowser;
 
 import android.app.Application;
 
+import com.woyou.zxbrowser.util.OrmUtil;
+
 import java.io.File;
 
 import ren.yale.android.cachewebviewlib.CacheWebView;
@@ -15,7 +17,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         File cacheFile = new File(this.getCacheDir(),"cache_webview");
-
+        OrmUtil.init(this);
         CacheWebView.getWebViewCache().init(this,cacheFile,1024*1024*100);
     }
 }
