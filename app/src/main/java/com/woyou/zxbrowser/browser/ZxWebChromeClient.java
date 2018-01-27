@@ -5,7 +5,6 @@ import android.webkit.JsPromptResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
-import com.woyou.zxbrowser.model.Timing;
 import com.woyou.zxbrowser.model.WebViewPerform;
 import com.woyou.zxbrowser.util.GsonUtil;
 import com.woyou.zxbrowser.util.OrmUtil;
@@ -37,8 +36,8 @@ public class ZxWebChromeClient extends WebChromeClient {
     @Override
     public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
         if (WebViewConst.JS_PROMPT_PREFIX.equals(defaultValue)){
-            Timing timing = GsonUtil.inst().fromJson(message,Timing.class);
-            OrmUtil.getOrm().save(new WebViewPerform(url, timing));
+            WebViewPerform timing = GsonUtil.inst().fromJson(message,WebViewPerform.class);
+            OrmUtil.getOrm().save(timing);
             result.cancel();
             return true;
         }
