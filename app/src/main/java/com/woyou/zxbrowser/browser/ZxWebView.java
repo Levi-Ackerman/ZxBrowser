@@ -20,7 +20,7 @@ import ren.yale.android.cachewebviewlib.CacheWebView;
  * *************************************************************
  */
 
-public class ZxWebView extends WebView {
+public class ZxWebView extends CacheWebView {
     private String UA = "Mozilla/5.0 (Linux; Android %s; %s Build/NMF26X; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/63.0.3239.107 Mobile Safari/537.36";
     private ZxWebChromeClient mChromeClient;
     private ZxWebViewClient mWebViewClient;

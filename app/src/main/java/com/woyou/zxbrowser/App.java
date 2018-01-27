@@ -22,7 +22,7 @@ public class App extends Application {
         {
             SqlScoutServer.create(this, getPackageName());
         }
-//        File cacheFile = new File(this.getCacheDir(),"cache_webview");
-//        CacheWebView.getWebViewCache().init(this,cacheFile,1024*1024*100);
+        File cacheFile = new File(this.getCacheDir(),"cache_webview");
+        CacheWebView.getWebViewCache().init(this,cacheFile,1024*1024*100);
     }
 }

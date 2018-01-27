@@ -5,14 +5,28 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.ConsoleMessage;
+import android.webkit.MimeTypeMap;
 import android.webkit.ValueCallback;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.woyou.zxbrowser.http.HttpClient;
+import com.woyou.zxbrowser.util.ZxLog;
+
+import java.lang.reflect.Array;
+import java.net.HttpURLConnection;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import okhttp3.Response;
 
 import static com.woyou.zxbrowser.browser.WebViewConst.TIMING_SCRIPT;
 
@@ -54,6 +68,30 @@ public class ZxWebViewClient extends WebViewClient {
         }
     }
 
+    private static List<String> mWhiteExt = Arrays.asList("js", "jpg","jpeg","png");
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+        String url = request.getUrl().toString();
+        String extension = MimeTypeMap.getFileExtensionFromUrl(url.toLowerCase());
+//        String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        if (!mWhiteExt.contains(extension)) {
+            ZxLog.debug("ignore " + request.getUrl());
+            return null;
+        }
+        if (request.getMethod().equalsIgnoreCase("get")) {
+            Response response = HttpClient.get(url, request.getRequestHeaders());
+            if (response != null) {
+                ZxLog.debug("request " + request.getUrl());
+                String mimeType = response.header("content-type", "text/plain");
+                String encoding = response.header("content-encoding", "utf-8");
+                return new WebResourceResponse(mimeType, encoding, response.body().byteStream());
+            }
+        }
+        return super.shouldInterceptRequest(view, request);
+    }
+
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         super.onPageStarted(view, url, favicon);
@@ -88,6 +126,6 @@ public class ZxWebViewClient extends WebViewClient {
         if (mWebEventListener != null) {
             mWebEventListener.onPageFinished(view, url);
         }
-        view.evaluateJavascript(TIMING_SCRIPT,null);
+        view.evaluateJavascript(TIMING_SCRIPT, null);
     }
 }
