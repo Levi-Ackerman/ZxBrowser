@@ -7,30 +7,41 @@ import com.litesuits.orm.db.annotation.Table;
 import com.litesuits.orm.db.enums.AssignType;
 import com.woyou.zxbrowser.BuildConfig;
 
-@Table("perform")
+@Table(WebViewPerform.TABLE_NAME)
 public class WebViewPerform {
+    public static final String TABLE_NAME = "perform";
+    public static final String URL = "url";
+    public static final String VER = "ver";
+    public static final String T0 = "t0";
+    public static final String T1 = "t1";
+    public static final String TCP_TIME = "tcpTime";
+    public static final String T2 = "t2";
     @PrimaryKey(AssignType.AUTO_INCREMENT)
     public long id;
 
-    @Column("url")
+    @Column(URL)
     public String url;
 
-    @Column("ver")
+    @Column(VER)
     public int mVersion = BuildConfig.VERSION_CODE;
 
-    @Column("t0")
+    @Column(T0)
     public long t0;
 
-    @Column("t1")
+    @Column(T1)
     public long t1;
 
-    @Column("t2")
+    @Column(TCP_TIME)
+    public long tcpTime;
+
+    @Column(T2)
     public long t2;
 
     public WebViewPerform (String url, Timing timing) {
         t0 = timing.responseEnd - timing.navigationStart;
         t1 = timing.domInteractive - timing.navigationStart;
         t2 = timing.domComplete - timing.navigationStart;
+        tcpTime = timing.connectEnd - timing.connectStart;
         this.url = url;
     }
 }

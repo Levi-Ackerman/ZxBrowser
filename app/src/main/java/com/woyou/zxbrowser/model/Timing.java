@@ -7,6 +7,14 @@ import com.google.gson.annotations.Expose;
  */
 
 public class Timing {
+    @Expose
+    public int navType;
+
+    @Expose
+    public long connectEnd;
+
+    @Expose
+    public long connectStart;
 
     @Expose
     public long navigationStart;
