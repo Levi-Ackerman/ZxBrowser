@@ -88,6 +88,6 @@ public class ZxWebViewClient extends WebViewClient {
         if (mWebEventListener != null) {
             mWebEventListener.onPageFinished(view, url);
         }
-        view.loadUrl(TIMING_SCRIPT);
+        view.evaluateJavascript(TIMING_SCRIPT,null);
     }
 }

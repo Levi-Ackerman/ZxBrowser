@@ -16,6 +16,7 @@ public class WebViewPerform {
     public static final String T1 = "t1";
     public static final String TCP_TIME = "tcpTime";
     public static final String T2 = "t2";
+    public static final String NAV_TYPE = "navType";
     @PrimaryKey(AssignType.AUTO_INCREMENT)
     public long id;
 
@@ -37,11 +38,15 @@ public class WebViewPerform {
     @Column(T2)
     public long t2;
 
+    @Column(NAV_TYPE)
+    public int navType;
+
     public WebViewPerform (String url, Timing timing) {
         t0 = timing.responseEnd - timing.navigationStart;
         t1 = timing.domInteractive - timing.navigationStart;
         t2 = timing.domComplete - timing.navigationStart;
         tcpTime = timing.connectEnd - timing.connectStart;
+        navType = timing.navType;
         this.url = url;
     }
 }
