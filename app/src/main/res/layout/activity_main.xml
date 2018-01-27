@@ -12,18 +12,9 @@
             android:id="@+id/address_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/btn_load"
-            android:layout_toStartOf="@+id/btn_load"
             android:singleLine="true"
+            android:imeOptions="actionGo"
             android:text="http://www.baidu.com"/>
-
-        <Button
-            android:id="@+id/btn_load"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:text="Load"/>
 
         <com.woyou.zxbrowser.browser.ZxWebView
             android:id="@+id/webview"
