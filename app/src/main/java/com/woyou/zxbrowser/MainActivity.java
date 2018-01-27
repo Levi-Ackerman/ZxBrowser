@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -27,9 +28,15 @@ public class MainActivity extends AppCompatActivity implements IWebEventListener
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mBinding.addressBar.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_GO) {
-                mBinding.webview.loadUrl(mBinding.addressBar.getText().toString());
-                totleShowSoftInput();
-                return true;
+                String url = mBinding.addressBar.getText().toString();
+                if (!TextUtils.isEmpty(url)) {
+                    if (!url.startsWith("http")) {
+                        url = "http://" + url;
+                    }
+                    mBinding.webview.loadUrl(url);
+                    totleShowSoftInput();
+                    return true;
+                }
             }
             return false;
         });
@@ -64,7 +71,8 @@ public class MainActivity extends AppCompatActivity implements IWebEventListener
     public void onProgressChanged(WebView view, int newProgress) {
         mBinding.progressBar.setProgress(newProgress);
     }
-    public void totleShowSoftInput(){
+
+    public void totleShowSoftInput() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,
