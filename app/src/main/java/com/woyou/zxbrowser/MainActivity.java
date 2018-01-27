@@ -41,6 +41,9 @@ public class MainActivity extends AppCompatActivity implements IWebEventListener
             return false;
         });
         mBinding.webview.setWebEventListener(this);
+        mBinding.back.setOnClickListener(v -> mBinding.webview.goBack());
+        mBinding.forward.setOnClickListener(v -> mBinding.webview.goForward());
+        mBinding.refresh.setOnClickListener(v -> mBinding.webview.reload());
     }
 
     @Override
