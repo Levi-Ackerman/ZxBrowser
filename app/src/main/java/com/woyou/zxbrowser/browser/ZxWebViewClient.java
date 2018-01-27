@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 import static com.woyou.zxbrowser.browser.WebViewConst.TIMING_SCRIPT;
 
@@ -68,25 +69,33 @@ public class ZxWebViewClient extends WebViewClient {
         }
     }
 
-    private static List<String> mWhiteExt = Arrays.asList("js", "jpg","jpeg","png");
+//    private static List<String> mWhiteExt = Arrays.asList("", "css", "js", "jpg", "jpeg", "png");
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
         String url = request.getUrl().toString();
-        String extension = MimeTypeMap.getFileExtensionFromUrl(url.toLowerCase());
+//        String extension = MimeTypeMap.getFileExtensionFromUrl(url.toLowerCase());
 //        String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-        if (!mWhiteExt.contains(extension)) {
-            ZxLog.debug("ignore " + request.getUrl());
-            return null;
-        }
+//        if (!mWhiteExt.contains(extension)) {
+//            ZxLog.debug("ignore " + request.getUrl());
+//            return null;
+//        }
         if (request.getMethod().equalsIgnoreCase("get")) {
             Response response = HttpClient.get(url, request.getRequestHeaders());
             if (response != null) {
                 ZxLog.debug("request " + request.getUrl());
-                String mimeType = response.header("content-type", "text/plain");
+                String mimeType = response.header("content-type", "text/html");
+                if (!TextUtils.isEmpty(mimeType) && mimeType.indexOf(';') > -1) {
+                    // remove the 'charset=utf-8' case of 'text/html;charset=utf-8'
+                    mimeType = mimeType.substring(0, mimeType.indexOf(';'));
+                }
+                ZxLog.debug("mimeType:" + mimeType);
                 String encoding = response.header("content-encoding", "utf-8");
-                return new WebResourceResponse(mimeType, encoding, response.body().byteStream());
+                ResponseBody body = response.body();
+                if (body != null && body.contentLength() > 0) {
+                    return new WebResourceResponse(mimeType, encoding, body.byteStream());
+                }
             }
         }
         return super.shouldInterceptRequest(view, request);
