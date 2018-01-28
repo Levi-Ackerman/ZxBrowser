@@ -81,23 +81,29 @@ public class ZxWebViewClient extends WebViewClient {
 //            ZxLog.debug("ignore " + request.getUrl());
 //            return null;
 //        }
+        int errorCode = 0;
         if (request.getMethod().equalsIgnoreCase("get")) {
+            errorCode |= 1;
             Response response = HttpClient.get(url, request.getRequestHeaders());
             if (response != null) {
-                ZxLog.debug("request " + request.getUrl());
+                errorCode |= 2;
                 String mimeType = response.header("content-type", "text/html");
                 if (!TextUtils.isEmpty(mimeType) && mimeType.indexOf(';') > -1) {
                     // remove the 'charset=utf-8' case of 'text/html;charset=utf-8'
                     mimeType = mimeType.substring(0, mimeType.indexOf(';'));
                 }
-                ZxLog.debug("mimeType:" + mimeType);
                 String encoding = response.header("content-encoding", "utf-8");
                 ResponseBody body = response.body();
-                if (body != null && body.contentLength() > 0) {
-                    return new WebResourceResponse(mimeType, encoding, body.byteStream());
+                if (body != null) {
+                    errorCode |= 4;
+//                    if (body.contentLength() > 0) {
+                        ZxLog.debug("request " + request.getUrl());
+                        return new WebResourceResponse(mimeType, encoding, body.byteStream());
+//                    }
                 }
             }
         }
+        ZxLog.debug(errorCode + ":ignore " + request.getUrl());
         return super.shouldInterceptRequest(view, request);
     }
 
