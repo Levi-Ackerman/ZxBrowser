@@ -13,9 +13,11 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.woyou.zxbrowser.http.HttpClient;
 import com.woyou.zxbrowser.util.FileUtil;
+import com.woyou.zxbrowser.util.ToastUtil;
 import com.woyou.zxbrowser.util.ZxLog;
 
 import java.io.File;
@@ -56,6 +58,7 @@ public class ZxWebViewClient extends WebViewClient {
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         if (url.startsWith("http")) {
+            ZxLog.debug("shouldOverride:"+url);
             return false;
         } else {
             try {
@@ -68,58 +71,72 @@ public class ZxWebViewClient extends WebViewClient {
     }
 
     //    private static List<String> mWhiteExt = Arrays.asList("", "css", "js", "jpg", "jpeg", "png");
-    private static final boolean USE_OK_HTTP = true;
+    private static final boolean USE_OK_HTTP = false;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
         if (USE_OK_HTTP) {
-            String url = request.getUrl().toString();
+            if (request.getUrl().toString().startsWith("http")) {
+                String url = request.getUrl().toString();
 //        String extension = MimeTypeMap.getFileExtensionFromUrl(url.toLowerCase());
 //        String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
 //        if (!mWhiteExt.contains(extension)) {
 //            ZxLog.debug("ignore " + request.getUrl());
 //            return null;
 //        }
-            int errorCode = 0;
-            if (request.getMethod().equalsIgnoreCase("get")) {
-                errorCode |= 1;
-                Response response = HttpClient.get(url, request.getRequestHeaders());
-                if (response != null) {
-                    errorCode |= 2;
-                    String mimeType = response.header("content-type", "text/html");
-                    if (!TextUtils.isEmpty(mimeType) && mimeType.indexOf(';') > -1) {
-                        // remove the 'charset=utf-8' case of 'text/html;charset=utf-8'
-                        mimeType = mimeType.substring(0, mimeType.indexOf(';'));
-                    }
-                    String encoding = response.header("content-encoding", "utf-8");
-                    ResponseBody body = response.body();
-                    if (body != null) {
-                        ZxLog.debug("request " + request.getUrl());
-                        AsyncTask.THREAD_POOL_EXECUTOR.execute(() -> {
-                            FileWriter writer = null;
-                            try {
-                                String encodingUrl = URLEncoder.encode(url,"utf-8");
-                                writer = new FileWriter(FileUtil.WEBVIEW_CACHE_DIR+ File.separator+encodingUrl);
-                                writer.write(encodingUrl);
-                                writer.flush();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            } finally {
-                                try {
-                                    if (writer!=null) {
-                                        writer.close();
-                                    }
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                int errorCode = 0;
+                if (request.getMethod().equalsIgnoreCase("get")) {
+                    errorCode |= 1;
+                    Response response = HttpClient.get(url, request.getRequestHeaders());
+                    if (response != null ) {
+                        errorCode |= 2;
+                        if (response.isSuccessful()) {
+                            errorCode |= 4;
+                            if (null != response.cacheResponse()) {
+                                ZxLog.debug("cached: " + url);
                             }
-                        });
-                        return new WebResourceResponse(mimeType, encoding, body.byteStream());
+                            if (null != response.networkResponse()) {
+                                ZxLog.debug("networked: " + url);
+                            }
+                            if (response.networkResponse() == null && response.cacheResponse() == null) {
+                                ZxLog.debug("Both null :" + url);
+                            }
+                            String mimeType = response.header("content-type", "text/html");
+                            if (!TextUtils.isEmpty(mimeType) && mimeType.indexOf(';') > -1) {
+                                // remove the 'charset=utf-8' case of 'text/html;charset=utf-8'
+                                mimeType = mimeType.substring(0, mimeType.indexOf(';'));
+                            }
+                            String encoding = response.header("content-encoding", "utf-8");
+                            ResponseBody body = response.body();
+                            if (body != null) {
+                                ZxLog.debug("request " + request.getUrl());
+                                AsyncTask.THREAD_POOL_EXECUTOR.execute(() -> {
+                                    FileWriter writer = null;
+                                    try {
+                                        String encodingUrl = URLEncoder.encode(url, "utf-8");
+                                        writer = new FileWriter(FileUtil.WEBVIEW_CACHE_DIR + File.separator + encodingUrl);
+                                        writer.write(encodingUrl);
+                                        writer.flush();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    } finally {
+                                        try {
+                                            if (writer != null) {
+                                                writer.close();
+                                            }
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                                return new WebResourceResponse(mimeType, encoding, body.byteStream());
+                            }
+                        }
                     }
                 }
+                ZxLog.debug(errorCode + ":ignore " + request.getUrl());
             }
-            ZxLog.debug(errorCode + ":ignore " + request.getUrl());
         }
         return super.shouldInterceptRequest(view, request);
     }
@@ -134,19 +151,32 @@ public class ZxWebViewClient extends WebViewClient {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-        super.onReceivedError(view, request, error);
+        if (request.isForMainFrame()) {
+            handleMainFrameError(view, error.getDescription().toString());
+        }
     }
 
     @Override
     public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
         super.onReceivedError(view, errorCode, description, failingUrl);
+        handleMainFrameError(view, description);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
         super.onReceivedHttpError(view, request, errorResponse);
+        if (request.isForMainFrame()){
+            handleMainFrameError(view,errorResponse.getReasonPhrase());
+        }
+    }
+
+    private void handleMainFrameError(WebView view, String errInfo) {
+        ZxLog.debug("error: "+errInfo+" : "+view.getUrl());
+        ToastUtil.showLong(errInfo);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
