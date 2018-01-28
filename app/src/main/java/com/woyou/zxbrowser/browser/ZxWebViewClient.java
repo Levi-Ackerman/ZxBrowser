@@ -6,10 +6,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
-import android.util.Log;
-import android.webkit.ConsoleMessage;
-import android.webkit.MimeTypeMap;
-import android.webkit.ValueCallback;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -18,13 +14,6 @@ import android.webkit.WebViewClient;
 
 import com.woyou.zxbrowser.http.HttpClient;
 import com.woyou.zxbrowser.util.ZxLog;
-
-import java.lang.reflect.Array;
-import java.net.HttpURLConnection;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -70,40 +59,40 @@ public class ZxWebViewClient extends WebViewClient {
     }
 
 //    private static List<String> mWhiteExt = Arrays.asList("", "css", "js", "jpg", "jpeg", "png");
+    private static final boolean USE_OK_HTTP = true;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-        String url = request.getUrl().toString();
+        if (USE_OK_HTTP) {
+            String url = request.getUrl().toString();
 //        String extension = MimeTypeMap.getFileExtensionFromUrl(url.toLowerCase());
 //        String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
 //        if (!mWhiteExt.contains(extension)) {
 //            ZxLog.debug("ignore " + request.getUrl());
 //            return null;
 //        }
-        int errorCode = 0;
-        if (request.getMethod().equalsIgnoreCase("get")) {
-            errorCode |= 1;
-            Response response = HttpClient.get(url, request.getRequestHeaders());
-            if (response != null) {
-                errorCode |= 2;
-                String mimeType = response.header("content-type", "text/html");
-                if (!TextUtils.isEmpty(mimeType) && mimeType.indexOf(';') > -1) {
-                    // remove the 'charset=utf-8' case of 'text/html;charset=utf-8'
-                    mimeType = mimeType.substring(0, mimeType.indexOf(';'));
-                }
-                String encoding = response.header("content-encoding", "utf-8");
-                ResponseBody body = response.body();
-                if (body != null) {
-                    errorCode |= 4;
-//                    if (body.contentLength() > 0) {
+            int errorCode = 0;
+            if (request.getMethod().equalsIgnoreCase("get")) {
+                errorCode |= 1;
+                Response response = HttpClient.get(url, request.getRequestHeaders());
+                if (response != null) {
+                    errorCode |= 2;
+                    String mimeType = response.header("content-type", "text/html");
+                    if (!TextUtils.isEmpty(mimeType) && mimeType.indexOf(';') > -1) {
+                        // remove the 'charset=utf-8' case of 'text/html;charset=utf-8'
+                        mimeType = mimeType.substring(0, mimeType.indexOf(';'));
+                    }
+                    String encoding = response.header("content-encoding", "utf-8");
+                    ResponseBody body = response.body();
+                    if (body != null) {
                         ZxLog.debug("request " + request.getUrl());
                         return new WebResourceResponse(mimeType, encoding, body.byteStream());
-//                    }
+                    }
                 }
             }
+            ZxLog.debug(errorCode + ":ignore " + request.getUrl());
         }
-        ZxLog.debug(errorCode + ":ignore " + request.getUrl());
         return super.shouldInterceptRequest(view, request);
     }
 

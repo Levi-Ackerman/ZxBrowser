@@ -8,6 +8,7 @@ import android.webkit.WebView;
 import com.woyou.zxbrowser.model.WebViewPerform;
 import com.woyou.zxbrowser.util.GsonUtil;
 import com.woyou.zxbrowser.util.OrmUtil;
+import com.woyou.zxbrowser.util.ZxLog;
 
 /**
  * ************************************************************
@@ -37,6 +38,7 @@ public class ZxWebChromeClient extends WebChromeClient {
     public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
         if (WebViewConst.JS_PROMPT_PREFIX.equals(defaultValue)){
             WebViewPerform timing = GsonUtil.inst().fromJson(message,WebViewPerform.class);
+            ZxLog.debug(timing);
             OrmUtil.getOrm().save(timing);
             result.cancel();
             return true;

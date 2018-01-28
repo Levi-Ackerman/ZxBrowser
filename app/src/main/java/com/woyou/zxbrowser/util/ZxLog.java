@@ -12,4 +12,9 @@ public class ZxLog {
             Log.d(TAG,log);
         }
     }
+    public static void debug(Object object){
+        if (object!=null){
+            debug(object.toString());
+        }
+    }
 }

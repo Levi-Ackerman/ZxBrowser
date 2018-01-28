@@ -47,4 +47,16 @@ public class WebViewPerform {
     @Expose
     @Column(NAV_TYPE)
     public int navType;
+
+    @Override
+    public String toString() {
+        return "WebViewPerform{" +
+                "url='" + url + '\'' +
+                ", t0=" + t0 +
+                ", t1=" + t1 +
+                ", tcpTime=" + tcpTime +
+                ", t2=" + t2 +
+                ", navType=" + navType +
+                '}';
+    }
 }
