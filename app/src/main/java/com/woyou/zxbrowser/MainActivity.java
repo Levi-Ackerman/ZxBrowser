@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -14,6 +15,10 @@ import android.webkit.WebView;
 
 import com.woyou.zxbrowser.browser.IWebEventListener;
 import com.woyou.zxbrowser.databinding.ActivityMainBinding;
+import com.woyou.zxbrowser.http.HttpClient;
+import com.woyou.zxbrowser.util.ZxLog;
+
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity implements IWebEventListener {
 
@@ -25,6 +30,26 @@ public class MainActivity extends AppCompatActivity implements IWebEventListener
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG);
         }
+//        new Thread(() -> {
+//            ZxLog.debug("start 1");
+//            Response response = HttpClient.get("http://www.mocky.io/v2/5a6d4bf42e0000ec03b8da8e?mocky-delay=10s", null);
+//            ZxLog.debug("1");
+//            if (response != null) {
+//                ZxLog.debug("http status code:" + response.code() + ";" + response.request().url());
+//            }
+//        }).start();
+//        new Thread(() -> {
+//            try {
+//                Thread.sleep(1000L);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            ZxLog.debug("start 2");
+//            Response response = HttpClient.get("https://www.mocky.io/v2/5185415ba171ea3a00704eed", null);
+//            ZxLog.debug("2");
+//            if (response != null) {
+//                ZxLog.debug("http status code:" + response.code() + ";" + response.request().url());
+//        }}).start();
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mBinding.addressBar.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_GO) {

@@ -42,9 +42,8 @@ public class ZxWebView extends WebView {
 
     private void init() {
         getSettings().setJavaScriptEnabled(true);
-//        getSettings().setUseWideViewPort(false);
-//        getSettings().setLoadWithOverviewMode(true);
-//        getSettings().setUserAgentString(String.format(UA, Build.VERSION.RELEASE, Build.MODEL));
+        getSettings().setUseWideViewPort(true);
+        getSettings().setLoadWithOverviewMode(true);
         mChromeClient = new ZxWebChromeClient();
         mWebViewClient = new ZxWebViewClient();
         setWebChromeClient(mChromeClient);

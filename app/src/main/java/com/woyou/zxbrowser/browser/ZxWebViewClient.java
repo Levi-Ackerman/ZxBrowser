@@ -3,16 +3,31 @@ package com.woyou.zxbrowser.browser;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Environment;
 import android.support.annotation.RequiresApi;
-import android.util.Log;
-import android.webkit.ConsoleMessage;
-import android.webkit.ValueCallback;
+import android.text.TextUtils;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
+
+import com.woyou.zxbrowser.http.HttpClient;
+import com.woyou.zxbrowser.util.FileUtil;
+import com.woyou.zxbrowser.util.ToastUtil;
+import com.woyou.zxbrowser.util.ZxLog;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.net.URLEncoder;
+
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 import static com.woyou.zxbrowser.browser.WebViewConst.TIMING_SCRIPT;
 
@@ -54,40 +69,104 @@ public class ZxWebViewClient extends WebViewClient {
         }
     }
 
+    //    private static List<String> mWhiteExt = Arrays.asList("", "css", "js", "jpg", "jpeg", "png");
+    private static final boolean USE_OK_HTTP = true;
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+        if (USE_OK_HTTP) {
+            if (request.getUrl().toString().startsWith("http")) {
+                String url = request.getUrl().toString();
+//        String extension = MimeTypeMap.getFileExtensionFromUrl(url.toLowerCase());
+//        String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+//        if (!mWhiteExt.contains(extension)) {
+//            ZxLog.debug("ignore " + request.getUrl());
+//            return null;
+//        }
+                int errorCode = 0;
+                if (request.getMethod().equalsIgnoreCase("get")) {
+                    errorCode |= 1;
+                    Response response = HttpClient.get(url, request.getRequestHeaders());
+                    if (response != null ) {
+                        errorCode |= 2;
+                        if (response.isSuccessful()) {
+                            errorCode |= 4;
+                            if (null != response.cacheResponse()) {
+                                ZxLog.debug("cached: " + url);
+                            }
+                            if (null != response.networkResponse()) {
+                                ZxLog.debug("networked: " + url);
+                            }
+                            if (response.networkResponse() == null && response.cacheResponse() == null) {
+                                ZxLog.debug("Both null :" + url);
+                            }
+                            String mimeType = response.header("content-type", "text/html");
+                            if (!TextUtils.isEmpty(mimeType) && mimeType.indexOf(';') > -1) {
+                                // remove the 'charset=utf-8' case of 'text/html;charset=utf-8'
+                                mimeType = mimeType.substring(0, mimeType.indexOf(';'));
+                            }
+                            String encoding = response.header("content-encoding", "utf-8");
+                            ResponseBody body = response.body();
+                            if (body != null) {
+                                return new WebResourceResponse(mimeType, encoding, body.byteStream());
+                            }
+                        }
+                    }
+                }
+                ZxLog.debug(errorCode + ":ignore " + request.getUrl());
+            }
+        }
+        return super.shouldInterceptRequest(view, request);
+    }
+
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         super.onPageStarted(view, url, favicon);
-//        view.getSettings().setBlockNetworkImage(true);
-//        view.getSettings().setLoadsImagesAutomatically(false);
+        view.getSettings().setBlockNetworkImage(true);
+        view.getSettings().setLoadsImagesAutomatically(false);
         if (mWebEventListener != null) {
             mWebEventListener.onPageStarted(view, url);
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-        super.onReceivedError(view, request, error);
+        if (request.isForMainFrame()) {
+            handleMainFrameError(view, error.getDescription().toString());
+        }
     }
 
     @Override
     public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
         super.onReceivedError(view, errorCode, description, failingUrl);
+        handleMainFrameError(view, description);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
         super.onReceivedHttpError(view, request, errorResponse);
+        if (request.isForMainFrame()){
+            handleMainFrameError(view,errorResponse.getReasonPhrase());
+        }
+    }
+
+    private void handleMainFrameError(WebView view, String errInfo) {
+        ZxLog.debug("error: "+errInfo+" : "+view.getUrl());
+        ToastUtil.showLong(errInfo);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
-//        view.getSettings().setBlockNetworkImage(false);
-//        view.getSettings().setLoadsImagesAutomatically(true);
+        view.getSettings().setBlockNetworkImage(false);
+        view.getSettings().setLoadsImagesAutomatically(true);
         if (mWebEventListener != null) {
             mWebEventListener.onPageFinished(view, url);
         }
-        view.evaluateJavascript(TIMING_SCRIPT,null);
+        view.evaluateJavascript(TIMING_SCRIPT, null);
     }
 }
