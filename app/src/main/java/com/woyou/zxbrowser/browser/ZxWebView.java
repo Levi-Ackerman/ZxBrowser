@@ -20,7 +20,7 @@ import ren.yale.android.cachewebviewlib.CacheWebView;
  * *************************************************************
  */
 
-public class ZxWebView extends CacheWebView {
+public class ZxWebView extends WebView {
     private String UA = "Mozilla/5.0 (Linux; Android %s; %s Build/NMF26X; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/63.0.3239.107 Mobile Safari/537.36";
     private ZxWebChromeClient mChromeClient;
     private ZxWebViewClient mWebViewClient;
@@ -42,9 +42,8 @@ public class ZxWebView extends CacheWebView {
 
     private void init() {
         getSettings().setJavaScriptEnabled(true);
-//        getSettings().setUseWideViewPort(false);
-//        getSettings().setLoadWithOverviewMode(true);
-//        getSettings().setUserAgentString(String.format(UA, Build.VERSION.RELEASE, Build.MODEL));
+        getSettings().setUseWideViewPort(true);
+        getSettings().setLoadWithOverviewMode(true);
         mChromeClient = new ZxWebChromeClient();
         mWebViewClient = new ZxWebViewClient();
         setWebChromeClient(mChromeClient);

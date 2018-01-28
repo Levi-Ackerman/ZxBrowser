@@ -58,7 +58,6 @@ public class ZxWebViewClient extends WebViewClient {
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         if (url.startsWith("http")) {
-            ZxLog.debug("shouldOverride:"+url);
             return false;
         } else {
             try {
@@ -71,7 +70,7 @@ public class ZxWebViewClient extends WebViewClient {
     }
 
     //    private static List<String> mWhiteExt = Arrays.asList("", "css", "js", "jpg", "jpeg", "png");
-    private static final boolean USE_OK_HTTP = false;
+    private static final boolean USE_OK_HTTP = true;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -110,26 +109,6 @@ public class ZxWebViewClient extends WebViewClient {
                             String encoding = response.header("content-encoding", "utf-8");
                             ResponseBody body = response.body();
                             if (body != null) {
-                                ZxLog.debug("request " + request.getUrl());
-                                AsyncTask.THREAD_POOL_EXECUTOR.execute(() -> {
-                                    FileWriter writer = null;
-                                    try {
-                                        String encodingUrl = URLEncoder.encode(url, "utf-8");
-                                        writer = new FileWriter(FileUtil.WEBVIEW_CACHE_DIR + File.separator + encodingUrl);
-                                        writer.write(encodingUrl);
-                                        writer.flush();
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    } finally {
-                                        try {
-                                            if (writer != null) {
-                                                writer.close();
-                                            }
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
                                 return new WebResourceResponse(mimeType, encoding, body.byteStream());
                             }
                         }
