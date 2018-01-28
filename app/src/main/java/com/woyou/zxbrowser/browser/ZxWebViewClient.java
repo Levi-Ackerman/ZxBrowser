@@ -3,7 +3,9 @@ package com.woyou.zxbrowser.browser;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.webkit.WebResourceError;
@@ -13,7 +15,14 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.woyou.zxbrowser.http.HttpClient;
+import com.woyou.zxbrowser.util.FileUtil;
 import com.woyou.zxbrowser.util.ZxLog;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.net.URLEncoder;
 
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -58,7 +67,7 @@ public class ZxWebViewClient extends WebViewClient {
         }
     }
 
-//    private static List<String> mWhiteExt = Arrays.asList("", "css", "js", "jpg", "jpeg", "png");
+    //    private static List<String> mWhiteExt = Arrays.asList("", "css", "js", "jpg", "jpeg", "png");
     private static final boolean USE_OK_HTTP = true;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -87,6 +96,25 @@ public class ZxWebViewClient extends WebViewClient {
                     ResponseBody body = response.body();
                     if (body != null) {
                         ZxLog.debug("request " + request.getUrl());
+                        AsyncTask.THREAD_POOL_EXECUTOR.execute(() -> {
+                            FileWriter writer = null;
+                            try {
+                                String encodingUrl = URLEncoder.encode(url,"utf-8");
+                                writer = new FileWriter(FileUtil.WEBVIEW_CACHE_DIR+ File.separator+encodingUrl);
+                                writer.write(encodingUrl);
+                                writer.flush();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            } finally {
+                                try {
+                                    if (writer!=null) {
+                                        writer.close();
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
                         return new WebResourceResponse(mimeType, encoding, body.byteStream());
                     }
                 }

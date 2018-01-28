@@ -14,9 +14,14 @@ import ren.yale.android.cachewebviewlib.CacheWebView;
  */
 
 public class App extends Application {
+    private static App mApp;
+    public static Application application(){
+        return mApp;
+    }
     @Override
     public void onCreate() {
         super.onCreate();
+        mApp = this;
         OrmUtil.init(this);
         if (BuildConfig.DEBUG)
         {
