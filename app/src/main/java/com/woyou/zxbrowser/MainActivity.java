@@ -3,6 +3,7 @@ package com.woyou.zxbrowser;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.net.TrafficStats;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import android.webkit.WebView;
 import com.woyou.zxbrowser.browser.IWebEventListener;
 import com.woyou.zxbrowser.databinding.ActivityMainBinding;
 import com.woyou.zxbrowser.http.HttpClient;
+import com.woyou.zxbrowser.util.UIHandler;
 import com.woyou.zxbrowser.util.ZxLog;
 
 import okhttp3.Response;
@@ -88,11 +90,32 @@ public class MainActivity extends AppCompatActivity implements IWebEventListener
     public void onPageFinished(WebView webView, String url) {
         mBinding.addressBar.setText(url);
         mBinding.progressBar.setVisibility(View.GONE);
+        mCanPrint = false;
     }
 
     @Override
     public void onPageStarted(WebView webView, String url) {
         mBinding.progressBar.setVisibility(View.VISIBLE);
+        mLastBits = TrafficStats.getUidRxBytes(getApplicationInfo().uid) == TrafficStats.UNSUPPORTED ? 0 : (TrafficStats.getTotalRxBytes() / 1024);
+        mLastTimeStamp = System.currentTimeMillis();
+        mCanPrint = true;
+        printBitSpeed();
+    }
+
+    private boolean mCanPrint = false;
+    private long mLastTimeStamp = 0;
+    private long mLastBits = 0;
+
+    private void printBitSpeed() {
+        if (mCanPrint) {
+            long bits = TrafficStats.getUidRxBytes(getApplicationInfo().uid) == TrafficStats.UNSUPPORTED ? 0 : (TrafficStats.getTotalRxBytes() / 1024);
+            long time = System.currentTimeMillis();
+            double speed = 1.0 * (bits - mLastBits) / (time - mLastTimeStamp);
+            ZxLog.debug("Bits speed :" + speed + " kb/s");
+            mLastBits = bits;
+            mLastTimeStamp = time;
+            UIHandler.postDelay(this::printBitSpeed, 1000);
+        }
     }
 
     @Override
