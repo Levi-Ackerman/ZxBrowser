@@ -3,9 +3,7 @@ package com.woyou.zxbrowser.browser;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.webkit.WebResourceError;
@@ -13,18 +11,10 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import com.woyou.zxbrowser.http.HttpClient;
-import com.woyou.zxbrowser.util.FileUtil;
 import com.woyou.zxbrowser.util.ToastUtil;
 import com.woyou.zxbrowser.util.ZxLog;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.net.URLEncoder;
 
 import okhttp3.Response;
 import okhttp3.ResponseBody;

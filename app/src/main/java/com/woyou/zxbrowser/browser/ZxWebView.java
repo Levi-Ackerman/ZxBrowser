@@ -6,10 +6,6 @@ import android.util.AttributeSet;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import junit.runner.Version;
-
-import ren.yale.android.cachewebviewlib.CacheWebView;
-
 /**
  * ************************************************************
  * Copyright (C) 2005 - 2017 UCWeb Inc. All Rights Reserved
