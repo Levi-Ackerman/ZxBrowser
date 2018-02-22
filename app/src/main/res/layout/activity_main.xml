@@ -49,6 +49,14 @@
                 android:id="@+id/refresh"
                 android:src="@drawable/refresh"
                 style="@style/toolbar_button"/>
+            <ImageButton
+                android:id="@+id/download"
+                android:src="@drawable/donwload"
+                style="@style/toolbar_button"/>
+            <ImageButton
+                android:id="@+id/home"
+                android:src="@drawable/home"
+                style="@style/toolbar_button"/>
         </LinearLayout>
     </LinearLayout>
 </layout>

@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
-        mBinding.back.setOnClickListener(v -> mBinding.webview.goBack());
+        mBinding.back.setOnClickListener(v -> onBackPressed());
         mBinding.forward.setOnClickListener(v -> mBinding.webview.goForward());
         mBinding.refresh.setOnClickListener(v -> mBinding.webview.reload());
     }
