@@ -1,14 +1,12 @@
-package com.woyou.zxbrowser.util;
+package com.woyou.util;
 
 
 import android.util.Log;
 
-import com.woyou.zxbrowser.BuildConfig;
-
 public class ZxLog {
     private static final String TAG = "ZxLog";
     public static void debug(String log){
-        if (BuildConfig.DEBUG){
+        if (DebugUtil.isDebugable()){
             Log.d(TAG,log);
         }
     }

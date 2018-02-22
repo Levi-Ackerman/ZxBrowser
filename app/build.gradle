@@ -33,7 +33,7 @@ dependencies {
     implementation 'com.android.support:design:26.1.0'
     implementation 'com.zhuge.analysis:zhugeio:3.2.1'
     implementation project(':webview')
+    implementation project(':zxutil')
     implementation 'ren.yale.android:cachewebviewlib:0.5.1'
     implementation 'com.squareup.okhttp3:okhttp:3.9.0'
-    implementation 'com.google.code.gson:gson:2.8.0'
 }

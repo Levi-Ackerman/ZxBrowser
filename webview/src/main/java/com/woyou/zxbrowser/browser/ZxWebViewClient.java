@@ -13,8 +13,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.woyou.zxbrowser.http.HttpClient;
-import com.woyou.zxbrowser.util.ToastUtil;
-import com.woyou.zxbrowser.util.ZxLog;
+import com.woyou.util.ToastUtil;
+import com.woyou.util.ZxLog;
 
 import okhttp3.Response;
 import okhttp3.ResponseBody;

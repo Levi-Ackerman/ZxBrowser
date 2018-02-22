@@ -15,8 +15,8 @@ import android.webkit.WebView;
 
 import com.woyou.zxbrowser.browser.IWebEventListener;
 import com.woyou.zxbrowser.databinding.ActivityMainBinding;
-import com.woyou.zxbrowser.util.UIHandler;
-import com.woyou.zxbrowser.util.ZxLog;
+import com.woyou.util.UIHandler;
+import com.woyou.util.ZxLog;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.json.JSONException;

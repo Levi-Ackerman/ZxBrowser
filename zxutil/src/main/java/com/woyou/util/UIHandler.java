@@ -1,4 +1,4 @@
-package com.woyou.zxbrowser.util;
+package com.woyou.util;
 
 import android.os.Handler;
 import android.os.Looper;

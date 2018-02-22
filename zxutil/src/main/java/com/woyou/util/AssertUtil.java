@@ -1,11 +1,10 @@
-package com.woyou.zxbrowser.util;
+package com.woyou.util;
 
-
-import com.woyou.zxbrowser.BuildConfig;
+import com.woyou.baseconfig.ConfigHelper;
 
 public class AssertUtil {
     public static void assertTrue(boolean expres, String message){
-        if (BuildConfig.DEBUG && expres) {
+        if (ConfigHelper.debuggable() && expres) {
             throw new Error(message);
         }
     }

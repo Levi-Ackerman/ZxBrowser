@@ -28,8 +28,4 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     compileOnly 'com.android.support:appcompat-v7:26.1.0'
-    compileOnly 'ren.yale.android:cachewebviewlib:0.5.1'
-    compileOnly 'com.squareup.okhttp3:okhttp:3.9.0'
-    compileOnly 'com.google.code.gson:gson:2.8.0'
-    compileOnly project(':zxutil')
 }
