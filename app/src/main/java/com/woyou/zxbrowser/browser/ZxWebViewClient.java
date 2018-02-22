@@ -70,7 +70,7 @@ public class ZxWebViewClient extends WebViewClient {
     }
 
     //    private static List<String> mWhiteExt = Arrays.asList("", "css", "js", "jpg", "jpeg", "png");
-    private static final boolean USE_OK_HTTP = true;
+    private static final boolean USE_OK_HTTP = false;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override

@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:imeOptions="actionGo"
             android:singleLine="true"
-            android:text="http://bbs.9game.cn" />
+            android:text="http://www.bilibili.tv" />
 
         <com.woyou.zxbrowser.browser.ZxWebView
             android:id="@+id/webview"
