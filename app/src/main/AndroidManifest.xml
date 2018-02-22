@@ -21,7 +21,8 @@
         <meta-data android:value="67bd68070a8a409e86ef0db9ed78017f" android:name = "ZHUGE_APPKEY"/>
         <meta-data android:value="test" android:name = "ZHUGE_CHANNEL"/>
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|keyboard|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
