@@ -3,6 +3,7 @@ package com.woyou.zxbrowser.browser;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import junit.runner.Version;
@@ -44,6 +45,9 @@ public class ZxWebView extends WebView {
         getSettings().setJavaScriptEnabled(true);
         getSettings().setUseWideViewPort(true);
         getSettings().setLoadWithOverviewMode(true);
+        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.LOLLIPOP) {
+            getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
+        }
         mChromeClient = new ZxWebChromeClient();
         mWebViewClient = new ZxWebViewClient();
         setWebChromeClient(mChromeClient);
