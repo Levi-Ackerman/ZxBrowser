@@ -143,12 +143,17 @@ public class ZxWebViewClient extends WebViewClient {
         }
     }
 
+    @Override
+    public void onLoadResource(WebView view, String url) {
+        super.onLoadResource(view, url);
+        mWebEventListener.onLoadResource(view,url);
+    }
+
     private void handleMainFrameError(WebView view, String errInfo) {
         ZxLog.debug("error: "+errInfo+" : "+view.getUrl());
         ToastUtil.showLong(errInfo);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);

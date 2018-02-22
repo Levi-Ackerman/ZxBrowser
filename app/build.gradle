@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.woyou.zxbrowser"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 26
         versionCode 3
         versionName "3.0"
