@@ -1,5 +1,6 @@
 package com.woyou.zxbrowser.browser;
 
+import android.graphics.Bitmap;
 import android.webkit.WebView;
 
 /**
@@ -12,4 +13,8 @@ public interface IWebEventListener {
     void onPageStarted(WebView webView, String url);
 
     void onProgressChanged(WebView view, int newProgress);
+
+    void onReceiveTitle(WebView view, String title);
+
+    void onReceiveIcon(WebView view, Bitmap icon);
 }

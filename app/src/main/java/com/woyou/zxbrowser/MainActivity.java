@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
                     if (!url.startsWith("http")) {
                         url = "http://" + url;
                     }
+                    mBinding.webview.requestFocus();
                     mBinding.webview.loadUrl(url);
                     totleShowSoftInput();
                     return true;
@@ -40,19 +41,39 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
+        mBinding.addressBar.setOnFocusChangeListener((v, hasFocus) -> {
+            String show ;
+            if (hasFocus){
+                show = webViewModel.getUrl().getValue();
+            }else{
+                show = webViewModel.getTitle().getValue();
+            }
+            if (!TextUtils.isEmpty(show)){
+                mBinding.addressBar.setText(show);
+            }
+        });
         mBinding.back.setOnClickListener(v -> onBackPressed());
         mBinding.forward.setOnClickListener(v -> mBinding.webview.goForward());
         mBinding.refresh.setOnClickListener(v -> mBinding.webview.reload());
     }
 
     private void observe(WebViewModel webViewModel) {
-        webViewModel.getUrl().observe(this,(url)-> mBinding.addressBar.setText(url));
+        webViewModel.getUrl().observe(this,(url)-> {
+            if (mBinding.addressBar.isFocused()) {
+                mBinding.addressBar.setText(url);
+            }
+        });
         webViewModel.getProgress().observe(this, (newProgress) ->{
             mBinding.progressBar.setProgress(newProgress);
             if (newProgress == 0){
                 mBinding.progressBar.setVisibility(View.VISIBLE);
             }else if (newProgress == 100) {
                 mBinding.progressBar.setVisibility(View.GONE);
+            }
+        });
+        webViewModel.getTitle().observe(this,(title)->{
+            if (!mBinding.addressBar.isFocused()){
+                mBinding.addressBar.setText(title);
             }
         });
     }
@@ -73,8 +94,7 @@ public class MainActivity extends AppCompatActivity {
     public void totleShowSoftInput() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,
-                    InputMethodManager.HIDE_IMPLICIT_ONLY);
+            imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),0);
         }
     }
 
