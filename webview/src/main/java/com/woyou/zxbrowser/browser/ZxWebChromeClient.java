@@ -1,5 +1,6 @@
 package com.woyou.zxbrowser.browser;
 
+import android.graphics.Bitmap;
 import android.webkit.ConsoleMessage;
 import android.webkit.JsPromptResult;
 import android.webkit.WebChromeClient;
@@ -27,6 +28,22 @@ public class ZxWebChromeClient extends WebChromeClient {
 
     void setWebEventListener(IWebEventListener webEventListener) {
         mWebEventListener = webEventListener;
+    }
+
+    @Override
+    public void onReceivedIcon(WebView view, Bitmap icon) {
+        super.onReceivedIcon(view, icon);
+        if (mWebEventListener!=null){
+            mWebEventListener.onReceiveIcon(view,icon);
+        }
+    }
+
+    @Override
+    public void onReceivedTitle(WebView view, String title) {
+        super.onReceivedTitle(view, title);
+        if (mWebEventListener!=null){
+            mWebEventListener.onReceiveTitle(view,title);
+        }
     }
 
     @Override

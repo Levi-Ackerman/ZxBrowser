@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link rel="shortcut icon" href="favicon.png" type="image/vnd.microsoft.icon" />
+    <link rel="icon" href="favicon.png" type="image/vnd.microsoft.icon" />
+    <title>主页</title>
+    <script>
+        function isURL(str) {
+            return !!str.match(/(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/g);
+        }
+        function jump() {
+            var urlInput = document.getElementById('url text');
+            var url = urlInput.value;
+            if(isURL(url)){
+                if(url.indexOf('://') == -1){
+                    url = 'http://'+url;
+                }
+                window.location.href = url;
+                urlInput.value = '';
+            }
+        }
+    </script>
+    <style type="text/css">
+        .logo{
+            width: 30%;
+            height: 30%;
+        }
+    </style>
+</head>
+<body>
+<div class="container" align="center">
+    <img class="logo" src="ic_launcher.png">
+    <div class="search">
+        <input class="text" type="text" id="url text" onkeypress="if(event.keyCode==13) {jump();return false;}">
+        <input class="button" type="button" id="btn search" onclick="jump()">
+    </div>
+</div>
+</body>
+</html>
