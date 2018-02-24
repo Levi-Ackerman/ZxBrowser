@@ -115,7 +115,7 @@ public class WebViewModel extends ViewModel implements IWebEventListener {
      * @return
      */
     public String handUrl(@NonNull String url) {
-        if (url.matches(ConstConfig.URL_REG)) {
+        if (url.matches(ConstConfig.URL_REG) && url.contains(".")) {
             if (!url.contains("://")) {
                 url = "http://" + url;
             }
