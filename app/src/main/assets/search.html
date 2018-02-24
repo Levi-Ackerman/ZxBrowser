@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link rel="shortcut icon" href="ic_launcher.png" type="image/vnd.microsoft.icon"/>
+    <link rel="icon" href="ic_launcher.png" type="image/vnd.microsoft.icon"/>
+    <title>主页</title>
+    <script>
+        function jump() {
+            var urlInput = document.getElementById('url text');
+            window.location.href = loader.handleUrl(urlInput.value);
+            urlInput.value = '';
+        }
+
+    </script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-weight: 500;
+            font-family: "Microsoft YaHei", "宋体", "Segoe UI", "Lucida Grande", Helvetica, Arial, sans-serif, FreeSans, Arimo;
+        }
+
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+        }
+
+        div.search {
+            padding: 30px 0;
+        }
+
+        form {
+            position: relative;
+            width: 300px;
+            margin: 0 auto;
+        }
+
+        input, button {
+            border: none;
+            outline: none;
+        }
+
+        input {
+            width: 100%;
+            height: 42px;
+            padding-left: 13px;
+            padding-right: 46px;
+        }
+
+        button {
+            height: 42px;
+            width: 42px;
+            cursor: pointer;
+            position: absolute;
+        }
+
+        .bar6 input {
+            border: 2px solid #a5f454;
+            border-radius: 5px;
+            background: transparent;
+            top: 0;
+            right: 0;
+        }
+
+        .bar6 button {
+            background: #a5f454;
+            border-radius: 0 5px 5px 0;
+            width: 60px;
+            top: 0;
+            right: 0;
+        }
+
+        .bar6 button:before {
+            content: "GO";
+            font-size: 13px;
+            color: #55616d;
+        }
+        .logo{
+            width: 30%;
+            height: 30%;
+        }
+
+    </style>
+</head>
+<body>
+<div id="container" align="center">
+    <div class="search bar6">
+        <img class="logo" src="ic_launcher.png" align="center">
+        <form onsubmit="jump();return false;">
+            <input type="text" id='url text' placeholder="输入网址或关键字..." onkeypress="if(event.keyCode==13) {jump();return false;}">
+            <button type="submit"></button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

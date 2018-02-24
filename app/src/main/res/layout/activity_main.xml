@@ -16,45 +16,75 @@
             android:layout_marginBottom="-2dp"
             android:max="100"
             android:progressDrawable="@drawable/progress_bar_states"
-            android:visibility="gone" />
-
-        <EditText
-            android:id="@+id/address_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:imeOptions="actionGo"
-            android:singleLine="true"
-            android:text="http://www.bilibili.tv" />
-
-        <com.woyou.zxbrowser.browser.ZxWebView
-            android:id="@+id/webview"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:visibility="gone"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
+            <ImageView
+                android:id="@+id/favicon"
+                style="@style/titlebar_icon"
+                android:src="@drawable/home"/>
+
+            <EditText
+                android:id="@+id/address_bar"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:imeOptions="actionGo"
+                android:singleLine="true"
+                android:text="http://www.bilibili.tv"/>
+
+            <ImageView
+                android:id="@+id/refresh_titlebar"
+                style="@style/titlebar_icon"
+                android:src="@drawable/refresh"/>
+            <ImageView
+                android:id="@+id/load_titlebar"
+                style="@style/titlebar_icon"
+                android:src="@drawable/forward"/>
+
+        </LinearLayout>
+
+        <com.woyou.zxbrowser.browser.ZxWebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <ImageButton
                 android:id="@+id/back"
-                android:text="back"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-            <Button
+                style="@style/toolbar_button"
+                android:src="@drawable/back"/>
+
+            <ImageButton
                 android:id="@+id/forward"
-                android:text="forward"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-            <Button
+                style="@style/toolbar_button"
+                android:src="@drawable/forward"/>
+
+            <ImageButton
                 android:id="@+id/refresh"
-                android:text="refresh"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                style="@style/toolbar_button"
+                android:src="@drawable/refresh"/>
+
+            <ImageButton
+                android:id="@+id/download"
+                style="@style/toolbar_button"
+                android:src="@drawable/donwload"/>
+
+            <ImageButton
+                android:id="@+id/home"
+                style="@style/toolbar_button"
+                android:src="@drawable/home"/>
         </LinearLayout>
     </LinearLayout>
 </layout>
