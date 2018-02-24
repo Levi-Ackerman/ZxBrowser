@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
+import com.woyou.baseconfig.ConstConfig;
 import com.woyou.zxbrowser.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void enterHomePage() {
-        mBinding.webview.loadUrl("file:///android_asset/home.html");
+        mBinding.webview.loadUrl(ConstConfig.HOME_PAGE_URL);
     }
 
 
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 mBinding.addressBar.setText(title);
             }
         });
+        webViewModel.getFavicon().observe(this,(icon)-> mBinding.favicon.setImageBitmap(icon));
     }
 
     @Override

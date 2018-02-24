@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModel;
 import android.graphics.Bitmap;
 import android.webkit.WebView;
 
+import com.woyou.baseconfig.ConstConfig;
 import com.woyou.zxbrowser.browser.IWebEventListener;
 
 /**
@@ -29,6 +30,9 @@ public class WebViewModel extends ViewModel implements IWebEventListener {
 
     @Override
     public void onPageStarted(WebView webView, String url) {
+        if (ConstConfig.HOME_PAGE_URL.equals(url)){
+            url = "ext:home";
+        }
         mUrl.postValue(url);
         mProgress.postValue(0);
     }
@@ -54,5 +58,9 @@ public class WebViewModel extends ViewModel implements IWebEventListener {
 
     public LiveData<String> getTitle() {
         return mTitle;
+    }
+
+    public LiveData<Bitmap> getFavicon(){
+        return mIcon;
     }
 }
