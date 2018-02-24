@@ -2,8 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1,user-scalable=no">
-    <title>8款纯CSS3搜索框</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link rel="shortcut icon" href="ic_launcher.png" type="image/vnd.microsoft.icon"/>
+    <link rel="icon" href="ic_launcher.png" type="image/vnd.microsoft.icon"/>
+    <title>主页</title>
+    <script>
+        function jump() {
+            var urlInput = document.getElementById('url text');
+            window.location.href = 'http://www.baidu.com';//loader.handleUrl(urlInput.value);
+            urlInput.value = '';
+        }
+
+    </script>
     <style>
         * {
             box-sizing: border-box;
@@ -12,7 +23,6 @@
         body {
             margin: 0;
             padding: 0;
-            background: #494A5F;
             font-weight: 500;
             font-family: "Microsoft YaHei", "宋体", "Segoe UI", "Lucida Grande", Helvetica, Arial, sans-serif, FreeSans, Arimo;
         }
@@ -52,13 +62,8 @@
             position: absolute;
         }
 
-        /*搜索框6*/
-        .bar6 {
-            background: #F9F0DA;
-        }
-
         .bar6 input {
-            border: 2px solid #c5464a;
+            border: 2px solid #a5f454;
             border-radius: 5px;
             background: transparent;
             top: 0;
@@ -66,7 +71,7 @@
         }
 
         .bar6 button {
-            background: #c5464a;
+            background: #a5f454;
             border-radius: 0 5px 5px 0;
             width: 60px;
             top: 0;
@@ -74,18 +79,23 @@
         }
 
         .bar6 button:before {
-            content: "搜索";
+            content: "GO";
             font-size: 13px;
-            color: #F9F0DA;
+            color: #55616d;
+        }
+        .logo{
+            width: 30%;
+            height: 30%;
         }
 
     </style>
 </head>
 <body>
-<div id="container">
+<div id="container" align="center">
     <div class="search bar6">
-        <form>
-            <input type="text" placeholder="请输入您要搜索的内容...">
+        <img class="logo" src="ic_launcher.png" align="center">
+        <form onsubmit="jump();return false;">
+            <input type="text" id='url text' placeholder="输入网址或关键字..." onkeypress="if(event.keyCode==13) {jump();return false;}">
             <button type="submit"></button>
         </form>
     </div>

@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         mBinding.refreshTitlebar.setOnClickListener(v -> mBinding.webview.reload());
         mBinding.loadTitlebar.setOnClickListener(v -> loadUrl());
         enterHomePage();
+        mBinding.webview.requestFocus();
     }
 
     private boolean loadUrl() {
