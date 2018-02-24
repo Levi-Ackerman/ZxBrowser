@@ -12,7 +12,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
 import com.woyou.zxbrowser.databinding.ActivityMainBinding;
-import com.woyou.zxbrowser.home.HomeFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,12 +55,15 @@ public class MainActivity extends AppCompatActivity {
         mBinding.back.setOnClickListener(v -> onBackPressed());
         mBinding.forward.setOnClickListener(v -> mBinding.webview.goForward());
         mBinding.refresh.setOnClickListener(v -> mBinding.webview.reload());
-        mBinding.home.setOnClickListener(v -> enterHomeFragment());
+        mBinding.home.setOnClickListener(v -> enterHomePage());
+        mBinding.refreshTitlebar.setOnClickListener(v -> mBinding.webview.reload());
+        enterHomePage();
     }
 
-    private void enterHomeFragment() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.content, new HomeFragment()).commit();
+    private void enterHomePage() {
+        mBinding.webview.loadUrl("file:///android_asset/home.html");
     }
+
 
     private void observe(WebViewModel webViewModel) {
         webViewModel.getUrl().observe(this, (url) -> {
