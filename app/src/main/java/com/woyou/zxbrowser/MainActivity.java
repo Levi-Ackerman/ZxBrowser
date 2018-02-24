@@ -17,54 +17,60 @@ import com.woyou.zxbrowser.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding mBinding;
+    private WebViewModel mWebViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        WebViewModel webViewModel = ViewModelProviders.of(this).get(WebViewModel.class);
-        mBinding.webview.setWebEventListener(webViewModel);
-        observe(webViewModel);
+        mWebViewModel = ViewModelProviders.of(this).get(WebViewModel.class);
+        mBinding.webview.setWebEventListener(mWebViewModel);
+        observe(mWebViewModel);
 
         mBinding.addressBar.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_GO) {
-                String url = mBinding.addressBar.getText().toString();
-                if (!TextUtils.isEmpty(url)) {
-                    if (!url.startsWith("http")) {
-                        url = "http://" + url;
-                    }
-                    mBinding.webview.requestFocus();
-                    mBinding.webview.loadUrl(url);
-                    totleShowSoftInput();
-                    return true;
-                }
+                if (loadUrl()) return true;
             }
             return false;
         });
         mBinding.addressBar.setOnFocusChangeListener((v, hasFocus) -> {
             String show;
             if (hasFocus) {
-                show = webViewModel.getUrl().getValue();
+                show = mWebViewModel.getUrl().getValue();
+                mBinding.refreshTitlebar.setVisibility(View.GONE);
+                mBinding.loadTitlebar.setVisibility(View.VISIBLE);
             } else {
-                show = webViewModel.getTitle().getValue();
+                show = mWebViewModel.getTitle().getValue();
+                mBinding.refreshTitlebar.setVisibility(View.VISIBLE);
+                mBinding.loadTitlebar.setVisibility(View.GONE);
             }
-            if (!TextUtils.isEmpty(show)) {
-                mBinding.addressBar.setText(show);
-            }
+            mBinding.addressBar.setText(show);
         });
         mBinding.back.setOnClickListener(v -> onBackPressed());
         mBinding.forward.setOnClickListener(v -> mBinding.webview.goForward());
         mBinding.refresh.setOnClickListener(v -> mBinding.webview.reload());
         mBinding.home.setOnClickListener(v -> enterHomePage());
         mBinding.refreshTitlebar.setOnClickListener(v -> mBinding.webview.reload());
+        mBinding.loadTitlebar.setOnClickListener(v -> loadUrl());
         enterHomePage();
+    }
+
+    private boolean loadUrl() {
+        String url = mBinding.addressBar.getText().toString();
+        if (!TextUtils.isEmpty(url)) {
+            String fixedUrl = mWebViewModel.handUrl(url);
+            mBinding.webview.requestFocus();
+            mBinding.webview.loadUrl(fixedUrl);
+            totleShowSoftInput();
+            return true;
+        }
+        return false;
     }
 
     private void enterHomePage() {
         mBinding.webview.loadUrl(ConstConfig.HOME_PAGE_URL);
     }
-
 
     private void observe(WebViewModel webViewModel) {
         webViewModel.getUrl().observe(this, (url) -> {
@@ -85,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 mBinding.addressBar.setText(title);
             }
         });
-        webViewModel.getFavicon().observe(this,(icon)-> mBinding.favicon.setImageBitmap(icon));
+        webViewModel.getFavicon().observe(this, (icon) -> mBinding.favicon.setImageBitmap(icon));
     }
 
     @Override

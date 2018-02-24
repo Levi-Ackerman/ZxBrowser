@@ -4,6 +4,8 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 
 import com.woyou.baseconfig.ConstConfig;
@@ -31,7 +33,13 @@ public class WebViewModel extends ViewModel implements IWebEventListener {
     @Override
     public void onPageStarted(WebView webView, String url) {
         if (ConstConfig.HOME_PAGE_URL.equals(url)){
-            url = "ext:home";
+            url = ""; //hide the home page url, don't post to View
+            webView.addJavascriptInterface(new Object(){
+                @JavascriptInterface
+                public String handleUrl(String url){
+                    return handUrl(url);
+                }
+            },"loader");
         }
         mUrl.postValue(url);
         mProgress.postValue(0);
@@ -62,5 +70,21 @@ public class WebViewModel extends ViewModel implements IWebEventListener {
 
     public LiveData<Bitmap> getFavicon(){
         return mIcon;
+    }
+
+    /**
+     * if input a url ,return the url;
+     * else return the keyword in search engine url
+     * @param url
+     * @return
+     */
+    public String handUrl(@NonNull String url) {
+        if(url.matches(ConstConfig.URL_REG)){
+            if (!url.contains("://")){
+                url = "http://"+url;
+            }
+            return url;
+        }
+        return ConstConfig.BAIDU_SEARCH_PREFIX +url;
     }
 }

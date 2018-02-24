@@ -43,6 +43,11 @@
                 android:id="@+id/refresh_titlebar"
                 style="@style/titlebar_icon"
                 android:src="@drawable/refresh"/>
+            <ImageView
+                android:id="@+id/load_titlebar"
+                style="@style/titlebar_icon"
+                android:src="@drawable/forward"/>
+
         </LinearLayout>
 
         <com.woyou.zxbrowser.browser.ZxWebView
