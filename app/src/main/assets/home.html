@@ -11,6 +11,7 @@
         function isURL(str) {
             return !!str.match(/(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/g);
         }
+
         function jump() {
             var urlInput = document.getElementById('url text');
             var url = loader.handleUrl(urlInput.value);
@@ -21,21 +22,64 @@
 
     </script>
     <style type="text/css">
-        .logo{
+        .logo {
             width: 30%;
             height: 30%;
         }
 
+        /*body {*/
+            /*font: normal 100% 'Arial', 'Helvetica', 'Verdana', sans-serif;*/
+            /*color: #333;*/
+        /*}*/
+
+        /*form {*/
+            /*margin: 0;*/
+        /*}*/
+
+        /*#search_box {*/
+            /*width: 201px;*/
+            /*height: 31px;*/
+            /*background: url(http://files.jb51.net/demoimg/200912/bg_search_box.gif);*/
+        /*}*/
+
+        /*#search_box #s {*/
+            /*float: left;*/
+            /*padding: 0;*/
+            /*margin: 6px 0 0 6px;*/
+            /*border: 0;*/
+            /*width: 159px;*/
+            /*background: none;*/
+            /*font-size: .8em;*/
+        /*}*/
+
+        /*#search_box #go {*/
+            /*float: right;*/
+            /*margin: 3px 4px 0 0;*/
+        /*}*/
+
+        #search_box #s{
+            /*background: url("http://files.jb51.net/demoimg/200912/bg_search_box.gif");*/
+            border: aqua;
+        }
     </style>
 </head>
 <body>
-<div class="container" align="center">
+
+<div id="search_box">
     <img class="logo" src="ic_launcher.png">
-    <div class="search">
-        <input class="text" type="text" id="url text"
-               onkeypress="if(event.keyCode==13) {jump();return false;}">
-        <input class="button" type="button" id="btn search" value="GO" onclick="jump()">
-    </div>
+    <form id="search_form" method="post" action="#">
+        <input type="text" id="s" value="Search" class="swap_value"/>
+        <input type="image" src="http://files.jb51.net/demoimg/200912/btn_search_box.gif"  id="go"
+               alt="Search" title="Search"/>
+    </form>
 </div>
+
+<!--<div class="container" align="center">-->
+<!--<div class="search">-->
+<!--<input class="text" type="text" id="url text"-->
+<!--onkeypress="if(event.keyCode==13) {jump();return false;}">-->
+<!--<input class="button" type="button" id="btn search" value="GO" onclick="jump()">-->
+<!--</div>-->
+<!--</div>-->
 </body>
 </html>
