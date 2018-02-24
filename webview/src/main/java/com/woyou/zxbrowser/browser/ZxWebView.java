@@ -42,8 +42,9 @@ public class ZxWebView extends WebView {
         getSettings().setUseWideViewPort(true);
         getSettings().setLoadWithOverviewMode(true);
         if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.LOLLIPOP) {
-            getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
+            getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
+        getSettings().setPluginState(WebSettings.PluginState.ON);
         mChromeClient = new ZxWebChromeClient();
         mWebViewClient = new ZxWebViewClient();
         setWebChromeClient(mChromeClient);

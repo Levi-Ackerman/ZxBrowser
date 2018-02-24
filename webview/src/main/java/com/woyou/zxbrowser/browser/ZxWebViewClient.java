@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
+import android.webkit.MimeTypeMap;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -15,6 +16,9 @@ import android.webkit.WebViewClient;
 import com.woyou.zxbrowser.http.HttpClient;
 import com.woyou.util.ToastUtil;
 import com.woyou.util.ZxLog;
+
+import java.util.Arrays;
+import java.util.List;
 
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -59,8 +63,8 @@ public class ZxWebViewClient extends WebViewClient {
         }
     }
 
-    //    private static List<String> mWhiteExt = Arrays.asList("", "css", "js", "jpg", "jpeg", "png");
-    private static final boolean USE_OK_HTTP = false;
+    private static List<String> mWhiteExt = Arrays.asList( "css", "js", "jpg", "jpeg", "png","svg","webp");
+    private static final boolean USE_OK_HTTP = true;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -68,17 +72,16 @@ public class ZxWebViewClient extends WebViewClient {
         if (USE_OK_HTTP) {
             if (request.getUrl().toString().startsWith("http")) {
                 String url = request.getUrl().toString();
-//        String extension = MimeTypeMap.getFileExtensionFromUrl(url.toLowerCase());
-//        String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-//        if (!mWhiteExt.contains(extension)) {
-//            ZxLog.debug("ignore " + request.getUrl());
-//            return null;
-//        }
+                String extension = MimeTypeMap.getFileExtensionFromUrl(url.toLowerCase());
+                if (!mWhiteExt.contains(extension)) {
+                    ZxLog.debug("ignore " + request.getUrl());
+                    return null;
+                }
                 int errorCode = 0;
                 if (request.getMethod().equalsIgnoreCase("get")) {
                     errorCode |= 1;
                     Response response = HttpClient.get(url, request.getRequestHeaders());
-                    if (response != null ) {
+                    if (response != null) {
                         errorCode |= 2;
                         if (response.isSuccessful()) {
                             errorCode |= 4;
@@ -138,19 +141,19 @@ public class ZxWebViewClient extends WebViewClient {
     @Override
     public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
         super.onReceivedHttpError(view, request, errorResponse);
-        if (request.isForMainFrame()){
-            handleMainFrameError(view,errorResponse.getReasonPhrase());
+        if (request.isForMainFrame()) {
+            handleMainFrameError(view, errorResponse.getReasonPhrase());
         }
     }
 
     @Override
     public void onLoadResource(WebView view, String url) {
         super.onLoadResource(view, url);
-        mWebEventListener.onLoadResource(view,url);
+        mWebEventListener.onLoadResource(view, url);
     }
 
     private void handleMainFrameError(WebView view, String errInfo) {
-        ZxLog.debug("error: "+errInfo+" : "+view.getUrl());
+        ZxLog.debug("error: " + errInfo + " : " + view.getUrl());
         ToastUtil.showLong(errInfo);
     }
 
@@ -162,6 +165,6 @@ public class ZxWebViewClient extends WebViewClient {
         if (mWebEventListener != null) {
             mWebEventListener.onPageFinished(view, url);
         }
-        view.evaluateJavascript(TIMING_SCRIPT, null);
+//        view.evaluateJavascript(TIMING_SCRIPT, null);
     }
 }

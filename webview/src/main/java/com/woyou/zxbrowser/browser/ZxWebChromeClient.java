@@ -48,10 +48,10 @@ public class ZxWebChromeClient extends WebChromeClient {
 
     @Override
     public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
-        if (WebViewConst.JS_PROMPT_PREFIX.equals(defaultValue)){
-            result.cancel();
-            return true;
-        }
+//        if (WebViewConst.JS_PROMPT_PREFIX.equals(defaultValue)){
+//            result.cancel();
+//            return true;
+//        }
         return super.onJsPrompt(view, url, message, defaultValue, result);
     }
 
