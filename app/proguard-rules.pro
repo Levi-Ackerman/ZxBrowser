@@ -19,3 +19,15 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-ignorewarnings
+
+-dontwarn com.squareup.okhttp.**
+
+-keep class com.squareup.okhttp.** { *;}
+
+-dontwarn okio.**
+
+
+-dontwarn com.woyou.**
+
+-keep class com.woyou.** { *;}

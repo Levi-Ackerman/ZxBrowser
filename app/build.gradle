@@ -10,9 +10,14 @@ android {
         versionName "3.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    dexOptions {
+        javaMaxHeapSize "4g"
+        incremental true
+    }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -34,10 +39,10 @@ dependencies {
     implementation 'com.zhuge.analysis:zhugeio:3.2.1'
     implementation project(':webview')
     implementation project(':zxutil')
-    implementation 'ren.yale.android:cachewebviewlib:0.5.1'
+//    implementation 'ren.yale.android:cachewebviewlib:0.5.1'
     implementation 'com.squareup.okhttp3:okhttp:3.9.0'
 
-    compile "android.arch.lifecycle:runtime:1.1.0"
-    compile "android.arch.lifecycle:extensions:1.1.0"
+    implementation "android.arch.lifecycle:runtime:1.1.0"
+    implementation "android.arch.lifecycle:extensions:1.1.0"
     annotationProcessor "android.arch.lifecycle:compiler:1.1.0"
 }
