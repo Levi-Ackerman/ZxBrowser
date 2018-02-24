@@ -12,6 +12,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
 import com.woyou.zxbrowser.databinding.ActivityMainBinding;
+import com.woyou.zxbrowser.home.HomeFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,37 +43,42 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
         mBinding.addressBar.setOnFocusChangeListener((v, hasFocus) -> {
-            String show ;
-            if (hasFocus){
+            String show;
+            if (hasFocus) {
                 show = webViewModel.getUrl().getValue();
-            }else{
+            } else {
                 show = webViewModel.getTitle().getValue();
             }
-            if (!TextUtils.isEmpty(show)){
+            if (!TextUtils.isEmpty(show)) {
                 mBinding.addressBar.setText(show);
             }
         });
         mBinding.back.setOnClickListener(v -> onBackPressed());
         mBinding.forward.setOnClickListener(v -> mBinding.webview.goForward());
         mBinding.refresh.setOnClickListener(v -> mBinding.webview.reload());
+        mBinding.home.setOnClickListener(v -> enterHomeFragment());
+    }
+
+    private void enterHomeFragment() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.content, new HomeFragment()).commit();
     }
 
     private void observe(WebViewModel webViewModel) {
-        webViewModel.getUrl().observe(this,(url)-> {
+        webViewModel.getUrl().observe(this, (url) -> {
             if (mBinding.addressBar.isFocused()) {
                 mBinding.addressBar.setText(url);
             }
         });
-        webViewModel.getProgress().observe(this, (newProgress) ->{
+        webViewModel.getProgress().observe(this, (newProgress) -> {
             mBinding.progressBar.setProgress(newProgress);
-            if (newProgress == 0){
+            if (newProgress == 0) {
                 mBinding.progressBar.setVisibility(View.VISIBLE);
-            }else if (newProgress == 100) {
+            } else if (newProgress == 100) {
                 mBinding.progressBar.setVisibility(View.GONE);
             }
         });
-        webViewModel.getTitle().observe(this,(title)->{
-            if (!mBinding.addressBar.isFocused()){
+        webViewModel.getTitle().observe(this, (title) -> {
+            if (!mBinding.addressBar.isFocused()) {
                 mBinding.addressBar.setText(title);
             }
         });
@@ -94,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     public void totleShowSoftInput() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
-            imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),0);
+            imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
         }
     }
 

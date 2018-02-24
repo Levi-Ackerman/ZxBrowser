@@ -16,21 +16,41 @@
             android:layout_marginBottom="-2dp"
             android:max="100"
             android:progressDrawable="@drawable/progress_bar_states"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
-        <EditText
-            android:id="@+id/address_bar"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:imeOptions="actionGo"
-            android:singleLine="true"
-            android:text="http://www.bilibili.tv" />
+            android:orientation="horizontal">
 
-        <com.woyou.zxbrowser.browser.ZxWebView
-            android:id="@+id/webview"
+            <ImageView
+                android:id="@+id/favicon"
+                style="@style/titlebar_icon"
+                android:src="@drawable/home"/>
+
+            <EditText
+                android:id="@+id/address_bar"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:imeOptions="actionGo"
+                android:singleLine="true"
+                android:text="http://www.bilibili.tv"/>
+
+            <ImageView
+                android:id="@+id/refresh_titlebar"
+                style="@style/titlebar_icon"
+                android:src="@drawable/refresh"/>
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1">
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,24 +59,28 @@
 
             <ImageButton
                 android:id="@+id/back"
-                android:src="@drawable/back"
-                style="@style/toolbar_button"/>
+                style="@style/toolbar_button"
+                android:src="@drawable/back"/>
+
             <ImageButton
                 android:id="@+id/forward"
-                android:src="@drawable/forward"
-                style="@style/toolbar_button" />
+                style="@style/toolbar_button"
+                android:src="@drawable/forward"/>
+
             <ImageButton
                 android:id="@+id/refresh"
-                android:src="@drawable/refresh"
-                style="@style/toolbar_button"/>
+                style="@style/toolbar_button"
+                android:src="@drawable/refresh"/>
+
             <ImageButton
                 android:id="@+id/download"
-                android:src="@drawable/donwload"
-                style="@style/toolbar_button"/>
+                style="@style/toolbar_button"
+                android:src="@drawable/donwload"/>
+
             <ImageButton
                 android:id="@+id/home"
-                android:src="@drawable/home"
-                style="@style/toolbar_button"/>
+                style="@style/toolbar_button"
+                android:src="@drawable/home"/>
         </LinearLayout>
     </LinearLayout>
 </layout>
