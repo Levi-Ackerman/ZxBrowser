@@ -16,7 +16,7 @@
             android:layout_marginBottom="-2dp"
             android:max="100"
             android:progressDrawable="@drawable/progress_bar_states"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,7 +26,7 @@
             <ImageView
                 android:id="@+id/favicon"
                 style="@style/titlebar_icon"
-                android:src="@drawable/home"/>
+                android:src="@drawable/home" />
 
             <EditText
                 android:id="@+id/address_bar"
@@ -37,16 +37,17 @@
                 android:background="@android:color/transparent"
                 android:imeOptions="actionGo"
                 android:singleLine="true"
-                android:text="http://www.bilibili.tv"/>
+                android:text="http://www.bilibili.tv" />
 
             <ImageView
                 android:id="@+id/refresh_titlebar"
                 style="@style/titlebar_icon"
-                android:src="@drawable/refresh"/>
+                android:src="@drawable/refresh" />
+
             <ImageView
                 android:id="@+id/load_titlebar"
                 style="@style/titlebar_icon"
-                android:src="@drawable/forward"/>
+                android:src="@drawable/forward" />
 
         </LinearLayout>
 
@@ -54,7 +55,7 @@
             android:id="@+id/webview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -64,27 +65,40 @@
             <ImageButton
                 android:id="@+id/back"
                 style="@style/toolbar_button"
-                android:src="@drawable/back"/>
+                android:src="@drawable/back" />
 
             <ImageButton
                 android:id="@+id/forward"
                 style="@style/toolbar_button"
-                android:src="@drawable/forward"/>
+                android:src="@drawable/forward" />
 
             <ImageButton
                 android:id="@+id/refresh"
                 style="@style/toolbar_button"
-                android:src="@drawable/refresh"/>
+                android:src="@drawable/refresh" />
 
             <ImageButton
                 android:id="@+id/download"
                 style="@style/toolbar_button"
-                android:src="@drawable/donwload"/>
+                android:src="@drawable/donwload" />
+
+            <TextView
+                android:visibility="invisible"
+                android:id="@+id/video_size"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="-35dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/shape_cornor"
+                android:gravity="center"
+                android:text="10"
+                android:textColor="@android:color/white"
+                android:textSize="9dp" />
 
             <ImageButton
                 android:id="@+id/home"
                 style="@style/toolbar_button"
-                android:src="@drawable/home"/>
+                android:src="@drawable/home" />
         </LinearLayout>
     </LinearLayout>
 </layout>

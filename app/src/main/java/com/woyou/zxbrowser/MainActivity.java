@@ -12,7 +12,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
 import com.woyou.baseconfig.ConstConfig;
-import com.woyou.util.ToastUtil;
 import com.woyou.zxbrowser.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -94,8 +93,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         webViewModel.getFavicon().observe(this, (icon) -> mBinding.favicon.setImageBitmap(icon));
-        webViewModel.getVideoSize().observe(this,size -> {
-            ToastUtil.showLong(size+"");
+        webViewModel.getVideoSize().observe(this, size -> {
+            if (size == null || size == 0) {
+                mBinding.videoSize.setVisibility(View.INVISIBLE);
+            } else {
+                mBinding.videoSize.setText(String.valueOf(size));
+                mBinding.videoSize.setVisibility(View.VISIBLE);
+            }
         });
     }
 

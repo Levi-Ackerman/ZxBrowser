@@ -58,6 +58,8 @@ public class WebViewModel extends ViewModel implements IWebEventListener {
         }
         mUrl.postValue(url);
         mProgress.postValue(0);
+        mVideoSize.postValue(0);
+        mVideos.clear();
     }
 
     @Override
