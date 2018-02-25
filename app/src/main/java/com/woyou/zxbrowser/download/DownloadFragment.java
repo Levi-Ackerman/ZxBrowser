@@ -36,7 +36,7 @@ public class DownloadFragment extends Fragment {
         mBinding.downloadPanel.animate().translationY(-1 * getResources().getDimension(R.dimen.download_panel_height)).setDuration(200).start();
         mBinding.exitDownload.setOnClickListener(v -> exitDownload());
         mBinding.downloadBackground.setOnClickListener(v -> exitDownload());
-        mAdpter = new DownloadAdpter(new ArrayList<>(mWebViewModel.getVideos()));
+        mAdpter = new DownloadAdpter(new ArrayList<>(mWebViewModel.getVideos()), getContext());
         mBinding.downloadListview.setAdapter(mAdpter);
         mBinding.downloadListview.setEmptyView(mBinding.getRoot().findViewById(android.R.id.empty));
         return mBinding.getRoot();

@@ -9,6 +9,10 @@ public class VideoInfo {
         mUrl = url;
     }
 
+    public String getUrl() {
+        return mUrl;
+    }
+
     private String mUrl;
 
     @Override
