@@ -9,4 +9,5 @@ public class ConstConfig {
 //    public static final String URL_REG = "(((^https?:(?:\\/\\/)?)(?:[-;:&=\\+\\$,\\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\\+\\$,\\w]+@)[A-Za-z0-9.-]+)((?:\\/[\\+~%\\/.\\w-_]*)?\\??(?:[-\\+=&;%@.\\w_]*)#?(?:[\\w]*))?)$";
     public static final String URL_REG = "((https?|ftp|file)://)?[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]";
     public static final String BAIDU_SEARCH_PREFIX = "https://www.baidu.com/s?wd=";
+    public static final String BUNDLE_KEY_WEBVIEW_MODEL = "webview_model";
 }

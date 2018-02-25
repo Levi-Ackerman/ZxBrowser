@@ -20,6 +20,7 @@ import com.woyou.util.VideoUtil;
 import com.woyou.util.ZxLog;
 import com.woyou.zxbrowser.browser.IWebEventListener;
 
+import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
@@ -28,7 +29,8 @@ import java.util.Locale;
  * Created by lee on 18-2-22.
  */
 
-public class WebViewModel extends ViewModel implements IWebEventListener {
+public class WebViewModel extends ViewModel implements IWebEventListener, Serializable {
+    private static long serialVersionUID = 1L;
     private MutableLiveData<String> mUrl = new MutableLiveData<>();
     private MutableLiveData<Integer> mProgress = new MutableLiveData<>();
     private MutableLiveData<String> mTitle = new MutableLiveData<>();
