@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:src="@drawable/donwload" />
+        android:src="@drawable/download" />
     <View
         android:layout_width="0.1dp"
         android:layout_height="40dp"

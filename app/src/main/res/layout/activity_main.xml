@@ -85,7 +85,7 @@
             <ImageButton
                 android:id="@+id/download"
                 style="@style/toolbar_button"
-                android:src="@drawable/donwload" />
+                android:src="@drawable/download" />
 
             <TextView
                 android:id="@+id/video_size"

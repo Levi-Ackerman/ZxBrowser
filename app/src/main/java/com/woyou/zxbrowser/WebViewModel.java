@@ -12,6 +12,7 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.webkit.JavascriptInterface;
 import android.webkit.MimeTypeMap;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 
 import com.woyou.baseconfig.ConstConfig;
@@ -19,10 +20,14 @@ import com.woyou.util.MimeTypeUtil;
 import com.woyou.util.VideoUtil;
 import com.woyou.util.ZxLog;
 import com.woyou.zxbrowser.browser.IWebEventListener;
+import com.woyou.zxbrowser.http.HttpClient;
 
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+
+import okhttp3.Response;
 
 /**
  * Created by lee on 18-2-22.
@@ -68,7 +73,7 @@ public class WebViewModel extends ViewModel implements IWebEventListener {
     }
 
     @Override
-    public void onLoadResource(WebView view, String url) {
+    public void onLoadResource(WebView view, String url, Map<String,String> header) {
         url = url.toLowerCase(Locale.US);
         //这个方法只会在主线程回调,所以,不用担心多线程问题
         String extension = MimeTypeMap.getFileExtensionFromUrl(url);
@@ -76,7 +81,13 @@ public class WebViewModel extends ViewModel implements IWebEventListener {
             ZxLog.debug("发现视频链接: " + url);
             VideoInfo videoInfo = new VideoInfo(url);
             mVideos.add(videoInfo);
-            mVideoSize.setValue(mVideos.size());
+            mVideoSize.postValue(mVideos.size());
+            Response response = HttpClient.get(url, header);
+            if (response!=null) {
+                for (String name : response.headers().names()) {
+                    ZxLog.debug(name + ":" + response.header(name));
+                }
+            }
 //            DownloadManager downloadManager = (DownloadManager) view.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
 //            Uri uri = Uri.parse(url);
 //            DownloadManager.Request request = new DownloadManager.Request(uri);

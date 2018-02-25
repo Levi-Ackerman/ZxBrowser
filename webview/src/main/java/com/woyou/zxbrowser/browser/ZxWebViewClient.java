@@ -3,6 +3,7 @@ package com.woyou.zxbrowser.browser;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
@@ -63,37 +64,29 @@ public class ZxWebViewClient extends WebViewClient {
         }
     }
 
-    private static List<String> mWhiteExt = Arrays.asList( "css", "js", "jpg", "jpeg", "png","svg","webp");
+    private static List<String> mWhiteExt = Arrays.asList("mp4","css", "js", "jpg", "jpeg", "png", "svg", "webp");
     private static final boolean USE_OK_HTTP = true;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+    public WebResourceResponse shouldInterceptRequest(final WebView view, final WebResourceRequest request) {
+        AsyncTask.SERIAL_EXECUTOR.execute(new Runnable() {
+            @Override
+            public void run() {
+                mWebEventListener.onLoadResource(view, request.getUrl().toString(), request.getRequestHeaders());
+            }
+        });
         if (USE_OK_HTTP) {
             if (request.getUrl().toString().startsWith("http")) {
                 String url = request.getUrl().toString();
                 String extension = MimeTypeMap.getFileExtensionFromUrl(url.toLowerCase());
                 if (!mWhiteExt.contains(extension)) {
-                    ZxLog.debug("ignore " + request.getUrl());
                     return null;
                 }
-                int errorCode = 0;
                 if (request.getMethod().equalsIgnoreCase("get")) {
-                    errorCode |= 1;
                     Response response = HttpClient.get(url, request.getRequestHeaders());
                     if (response != null) {
-                        errorCode |= 2;
                         if (response.isSuccessful()) {
-                            errorCode |= 4;
-                            if (null != response.cacheResponse()) {
-                                ZxLog.debug("cached: " + url);
-                            }
-                            if (null != response.networkResponse()) {
-                                ZxLog.debug("networked: " + url);
-                            }
-                            if (response.networkResponse() == null && response.cacheResponse() == null) {
-                                ZxLog.debug("Both null :" + url);
-                            }
                             String mimeType = response.header("content-type", "text/html");
                             if (!TextUtils.isEmpty(mimeType) && mimeType.indexOf(';') > -1) {
                                 // remove the 'charset=utf-8' case of 'text/html;charset=utf-8'
@@ -107,7 +100,6 @@ public class ZxWebViewClient extends WebViewClient {
                         }
                     }
                 }
-                ZxLog.debug(errorCode + ":ignore " + request.getUrl());
             }
         }
         return super.shouldInterceptRequest(view, request);
@@ -149,7 +141,6 @@ public class ZxWebViewClient extends WebViewClient {
     @Override
     public void onLoadResource(WebView view, String url) {
         super.onLoadResource(view, url);
-        mWebEventListener.onLoadResource(view, url);
     }
 
     private void handleMainFrameError(WebView view, String errInfo) {
