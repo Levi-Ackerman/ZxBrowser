@@ -13,8 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.woyou.baseconfig.ConstConfig;
 import com.woyou.zxbrowser.databinding.ActivityMainBinding;
-
-import java.util.ArrayList;
+import com.woyou.zxbrowser.download.DownloadFragment;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -4,7 +4,7 @@ package com.woyou.zxbrowser;
  * Created by lee on 18-2-24.
  */
 
-class VideoInfo {
+public class VideoInfo {
     public VideoInfo(String url) {
         mUrl = url;
     }

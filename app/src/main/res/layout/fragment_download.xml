@@ -22,16 +22,21 @@
             <ListView
                 android:id="@+id/download_listview"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="@dimen/download_list_height"
                 android:background="@android:color/white" />
-
+            <TextView
+                android:id="@android:id/empty"
+                android:text="该网页没有发现视频"
+                android:gravity="center"
+                android:background="@color/main_background"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/download_list_height" />
             <include layout="@layout/divide" />
 
             <ImageButton
                 android:id="@+id/exit_download"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="@dimen/download_exit_btn_height"
                 android:background="@drawable/ripple_white_back"
                 android:src="@drawable/ic_arrow_down" />
         </LinearLayout>
