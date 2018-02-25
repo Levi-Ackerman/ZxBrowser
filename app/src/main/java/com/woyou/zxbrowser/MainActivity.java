@@ -53,6 +53,10 @@ public class MainActivity extends AppCompatActivity {
         mBinding.home.setOnClickListener(v -> enterHomePage());
         mBinding.refreshTitlebar.setOnClickListener(v -> mBinding.webview.reload());
         mBinding.loadTitlebar.setOnClickListener(v -> loadUrl());
+        mBinding.download.setOnClickListener(v -> {
+            getSupportFragmentManager().beginTransaction().addToBackStack(null).add(android.R.id.content,new DownloadFragment()).commit();
+
+        });
         enterHomePage();
         mBinding.webview.requestFocus();
     }
@@ -105,6 +109,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount()>0){
+            super.onBackPressed();
+            return ;
+        }
         if (mBinding.webview.canGoBack()) {
             mBinding.webview.goBack();
         } else {
