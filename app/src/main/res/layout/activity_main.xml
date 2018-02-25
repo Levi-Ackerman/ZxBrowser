@@ -6,6 +6,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/main_background"
         android:orientation="vertical">
 
         <ProgressBar
@@ -51,11 +52,15 @@
 
         </LinearLayout>
 
+        <include layout="@layout/divide" />
+
         <com.woyou.zxbrowser.browser.ZxWebView
             android:id="@+id/webview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
+
+        <include layout="@layout/divide" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -83,7 +88,6 @@
                 android:src="@drawable/donwload" />
 
             <TextView
-                android:visibility="invisible"
                 android:id="@+id/video_size"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
@@ -93,7 +97,8 @@
                 android:gravity="center"
                 android:text="10"
                 android:textColor="@android:color/white"
-                android:textSize="9dp" />
+                android:textSize="9dp"
+                android:visibility="invisible" />
 
             <ImageButton
                 android:id="@+id/home"

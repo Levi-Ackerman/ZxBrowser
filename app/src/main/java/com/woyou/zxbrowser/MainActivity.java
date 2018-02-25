@@ -14,6 +14,8 @@ import android.view.inputmethod.InputMethodManager;
 import com.woyou.baseconfig.ConstConfig;
 import com.woyou.zxbrowser.databinding.ActivityMainBinding;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding mBinding;
@@ -54,7 +56,9 @@ public class MainActivity extends AppCompatActivity {
         mBinding.refreshTitlebar.setOnClickListener(v -> mBinding.webview.reload());
         mBinding.loadTitlebar.setOnClickListener(v -> loadUrl());
         mBinding.download.setOnClickListener(v -> {
-            getSupportFragmentManager().beginTransaction().addToBackStack(null).add(android.R.id.content,new DownloadFragment()).commit();
+            DownloadFragment downloadFragment = new DownloadFragment();
+            downloadFragment.setWebViewModel(mWebViewModel);
+            getSupportFragmentManager().beginTransaction().addToBackStack(null).add(android.R.id.content, downloadFragment).commit();
 
         });
         enterHomePage();
@@ -109,9 +113,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount()>0){
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             super.onBackPressed();
-            return ;
+            return;
         }
         if (mBinding.webview.canGoBack()) {
             mBinding.webview.goBack();
