@@ -64,7 +64,7 @@ public class ZxWebViewClient extends WebViewClient {
         }
     }
 
-    private static List<String> mWhiteExt = Arrays.asList("mp4","css", "js", "jpg", "jpeg", "png", "svg", "webp");
+    private static List<String> mWhiteExt = Arrays.asList("css", "js", "jpg", "jpeg", "png", "svg", "webp");
     private static final boolean USE_OK_HTTP = true;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -87,6 +87,12 @@ public class ZxWebViewClient extends WebViewClient {
                     Response response = HttpClient.get(url, request.getRequestHeaders());
                     if (response != null) {
                         if (response.isSuccessful()) {
+                            if (null != response.cacheResponse()) {
+                                ZxLog.debug("cached: " + url);
+                            }
+                            if (null != response.networkResponse()) {
+                                ZxLog.debug("networked: " + url);
+                            }
                             String mimeType = response.header("content-type", "text/html");
                             if (!TextUtils.isEmpty(mimeType) && mimeType.indexOf(';') > -1) {
                                 // remove the 'charset=utf-8' case of 'text/html;charset=utf-8'
