@@ -21,5 +21,5 @@ public interface IWebEventListener {
 
     void onReceiveIcon(WebView view, Bitmap icon);
 
-    void onLoadResource(WebView view, String s, Map<String, String> requestHeaders);
+    void onLoadResource(WebView view, String url);
 }

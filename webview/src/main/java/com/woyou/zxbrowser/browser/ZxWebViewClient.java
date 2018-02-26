@@ -70,12 +70,6 @@ public class ZxWebViewClient extends WebViewClient {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public WebResourceResponse shouldInterceptRequest(final WebView view, final WebResourceRequest request) {
-        AsyncTask.SERIAL_EXECUTOR.execute(new Runnable() {
-            @Override
-            public void run() {
-                mWebEventListener.onLoadResource(view, request.getUrl().toString(), request.getRequestHeaders());
-            }
-        });
         if (USE_OK_HTTP) {
             if (request.getUrl().toString().startsWith("http")) {
                 String url = request.getUrl().toString();
@@ -147,6 +141,7 @@ public class ZxWebViewClient extends WebViewClient {
     @Override
     public void onLoadResource(WebView view, String url) {
         super.onLoadResource(view, url);
+        mWebEventListener.onLoadResource(view, url);
     }
 
     private void handleMainFrameError(WebView view, String errInfo) {

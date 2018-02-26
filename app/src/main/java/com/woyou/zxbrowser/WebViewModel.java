@@ -7,6 +7,7 @@ import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -38,7 +39,7 @@ public class WebViewModel extends ViewModel implements IWebEventListener {
     private MutableLiveData<Integer> mProgress = new MutableLiveData<>();
     private MutableLiveData<String> mTitle = new MutableLiveData<>();
     private MutableLiveData<Bitmap> mIcon = new MutableLiveData<>();
-    private MutableLiveData<Integer> mVideoSize= new MutableLiveData<>();
+    private MutableLiveData<Integer> mVideoSize = new MutableLiveData<>();
     private LinkedHashSet<VideoInfo> mVideos = new LinkedHashSet<>();
 
     public LiveData<String> getUrl() {
@@ -48,12 +49,14 @@ public class WebViewModel extends ViewModel implements IWebEventListener {
     @Override
     public void onPageFinished(WebView webView, String url) {
         webView.getSettings().setBlockNetworkImage(false);
+        webView.getSettings().setLoadsImagesAutomatically(true);
         mProgress.postValue(100);
     }
 
     @Override
     public void onPageStarted(WebView webView, String url) {
         webView.getSettings().setBlockNetworkImage(true);
+        webView.getSettings().setLoadsImagesAutomatically(false);
         if (ConstConfig.HOME_PAGE_URL.equals(url)) {
             url = ""; //hide the home page url, don't post to View
             webView.addJavascriptInterface(new Object() {
@@ -75,8 +78,8 @@ public class WebViewModel extends ViewModel implements IWebEventListener {
     }
 
     @Override
-    public void onLoadResource(WebView view, String url, Map<String,String> header) {
-        url = url.toLowerCase(Locale.US);
+    public void onLoadResource(WebView view, String url) {
+//        url = url.toLowerCase(Locale.US);
         //这个方法只会在主线程回调,所以,不用担心多线程问题
         String extension = MimeTypeMap.getFileExtensionFromUrl(url);
         if (VideoUtil.isVideoExtension(extension)) {
@@ -84,12 +87,15 @@ public class WebViewModel extends ViewModel implements IWebEventListener {
             VideoInfo videoInfo = new VideoInfo(url);
             mVideos.add(videoInfo);
             mVideoSize.postValue(mVideos.size());
-            Response response = HttpClient.get(url, header);
-            if (response!=null) {
-                for (String name : response.headers().names()) {
-                    ZxLog.debug(name + ":" + response.header(name));
+            AsyncTask.SERIAL_EXECUTOR.execute(() -> {
+                Response response = HttpClient.get(url, null);
+                if (response != null) {
+                    for (String name : response.headers().names()) {
+                        ZxLog.debug(name + ":" + response.header(name));
+                    }
                 }
-            }
+            });
+
 //            DownloadManager downloadManager = (DownloadManager) view.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
 //            Uri uri = Uri.parse(url);
 //            DownloadManager.Request request = new DownloadManager.Request(uri);
