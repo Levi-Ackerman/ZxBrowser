@@ -1,34 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="60dp"
-              android:gravity="center_vertical"
-              android:orientation="horizontal">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    >
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/download"/>
+    <data>
 
-    <View
-        android:layout_width="0.1dp"
-        android:layout_height="40dp"
-        android:background="@color/home_divide"/>
+        <variable
+            name="videoInfo"
+            type="com.woyou.zxbrowser.VideoInfo"/>
+    </data>
 
-    <TextView
-        android:id="@+id/video_item_url"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_height="60dp"
+        android:background="@drawable/ripple_white_back"
         android:clickable="true"
-        android:ellipsize="marquee"
         android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:marqueeRepeatLimit="-1"
-        android:singleLine="true"
-        tools:text="nothing"/>
-</LinearLayout>
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:onClick="@{videoInfo::onClick}"
+            android:background="@drawable/ripple_trasparent_back"
+            android:src="@drawable/download"/>
+
+        <View
+            android:layout_width="0.2dp"
+            android:layout_height="40dp"
+            android:background="@color/home_divide"/>
+
+        <TextView
+            android:id="@+id/video_item_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:singleLine="true"
+            android:text="@{videoInfo.url}"/>
+    </LinearLayout>
+</layout>

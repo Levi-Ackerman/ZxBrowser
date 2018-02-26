@@ -1,20 +1,22 @@
 package com.woyou.zxbrowser.download;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.woyou.zxbrowser.R;
 import com.woyou.zxbrowser.VideoInfo;
+import com.woyou.zxbrowser.databinding.ItemDownloadVideoBinding;
 
 import java.util.ArrayList;
 
 
-public class DownloadAdpter extends BaseAdapter {
+public class DownloadAdpter extends RecyclerView.Adapter<DownloadAdpter.ViewHolder> {
     private final Context mContext;
     private ArrayList<VideoInfo> mVideoInfos;
 
@@ -24,13 +26,16 @@ public class DownloadAdpter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
-        return mVideoInfos.size();
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+        ItemDownloadVideoBinding binding = DataBindingUtil.inflate(layoutInflater,R.layout.item_download_video,parent,false);
+        return new ViewHolder(binding);
     }
 
     @Override
-    public VideoInfo getItem(int position) {
-        return mVideoInfos.get(position);
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        VideoInfo videoInfo = mVideoInfos.get(position);
+        holder.bind(videoInfo);
     }
 
     @Override
@@ -39,22 +44,21 @@ public class DownloadAdpter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        VideoInfo videoInfo = getItem(position);
-        ViewHolder viewHolder = null;
-        if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_download_video, null);
-            viewHolder = new ViewHolder();
-            viewHolder.mUrl = convertView.findViewById(R.id.video_item_url);
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
-        viewHolder.mUrl.setText(videoInfo.getUrl());
-        return convertView;
+    public int getItemCount() {
+        return mVideoInfos.size();
     }
 
-    class ViewHolder {
-        TextView mUrl;
+    class ViewHolder extends RecyclerView.ViewHolder{
+        private ItemDownloadVideoBinding mBinding;
+
+        public ViewHolder(ItemDownloadVideoBinding binding) {
+            super(binding.getRoot());
+            this.mBinding = binding;
+        }
+
+        public void bind(VideoInfo videoInfo) {
+            mBinding.setVideoInfo(videoInfo);
+            mBinding.executePendingBindings();
+        }
     }
 }

@@ -19,26 +19,39 @@
             android:layout_marginBottom="@dimen/download_panel_margin_bottom"
             android:orientation="vertical">
 
-            <ListView
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/download_listview"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/download_list_height"
-                android:background="@android:color/white" />
-            <TextView
-                android:id="@android:id/empty"
-                android:text="该网页没有发现视频"
-                android:gravity="center"
-                android:background="@color/main_background"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/download_list_height" />
-            <include layout="@layout/divide" />
+                android:background="@color/main_background"/>
 
-            <ImageButton
-                android:id="@+id/exit_download"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/download_exit_btn_height"
-                android:background="@drawable/ripple_white_back"
-                android:src="@drawable/ic_arrow_down" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:background="@android:color/white"
+                    android:gravity="center"
+                    android:text="下载路径:/sdcard/Videos/"/>
+
+                <View
+                    android:layout_width="0.2dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"/>
+
+                <Button
+                    android:id="@+id/exit_download"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:background="@drawable/ripple_white_back"
+                    android:src="@drawable/ic_arrow_down"
+                    android:text="返回"/>
+            </LinearLayout>
         </LinearLayout>
     </FrameLayout>
 </layout>

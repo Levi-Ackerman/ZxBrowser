@@ -16,6 +16,7 @@ import android.webkit.MimeTypeMap;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 
+import com.woyou.baseconfig.ConfigHelper;
 import com.woyou.baseconfig.ConstConfig;
 import com.woyou.util.MimeTypeUtil;
 import com.woyou.util.VideoUtil;
@@ -23,6 +24,7 @@ import com.woyou.util.ZxLog;
 import com.woyou.zxbrowser.browser.IWebEventListener;
 import com.woyou.zxbrowser.http.HttpClient;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
@@ -84,7 +86,7 @@ public class WebViewModel extends ViewModel implements IWebEventListener {
         String extension = MimeTypeMap.getFileExtensionFromUrl(url);
         if (VideoUtil.isVideoExtension(extension)) {
             ZxLog.debug("发现视频链接: " + url);
-            VideoInfo videoInfo = new VideoInfo(url);
+            VideoInfo videoInfo = new VideoInfo(url,extension);
             mVideos.add(videoInfo);
             mVideoSize.postValue(mVideos.size());
             AsyncTask.SERIAL_EXECUTOR.execute(() -> {
@@ -95,15 +97,6 @@ public class WebViewModel extends ViewModel implements IWebEventListener {
                     }
                 }
             });
-
-//            DownloadManager downloadManager = (DownloadManager) view.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
-//            Uri uri = Uri.parse(url);
-//            DownloadManager.Request request = new DownloadManager.Request(uri);
-//            request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
-//            request.setTitle("hello.mp4");
-//            request.setDestinationInExternalFilesDir(view.getContext(), Environment.DIRECTORY_DOWNLOADS, "mydown");
-//            request.setVisibleInDownloadsUi(true);
-//            downloadManager.enqueue(request);
         }
     }
 

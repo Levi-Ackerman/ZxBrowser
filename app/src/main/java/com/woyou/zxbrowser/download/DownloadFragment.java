@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.view.menu.MenuAdapter;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.woyou.zxbrowser.R;
@@ -36,9 +38,9 @@ public class DownloadFragment extends Fragment {
         mBinding.downloadPanel.animate().translationY(-1 * getResources().getDimension(R.dimen.download_panel_height)).setDuration(200).start();
         mBinding.exitDownload.setOnClickListener(v -> exitDownload());
         mBinding.downloadBackground.setOnClickListener(v -> exitDownload());
+        mBinding.downloadListview.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdpter = new DownloadAdpter(new ArrayList<>(mWebViewModel.getVideos()), getContext());
         mBinding.downloadListview.setAdapter(mAdpter);
-        mBinding.downloadListview.setEmptyView(mBinding.getRoot().findViewById(android.R.id.empty));
         return mBinding.getRoot();
     }
 
