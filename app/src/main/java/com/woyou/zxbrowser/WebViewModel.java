@@ -47,11 +47,13 @@ public class WebViewModel extends ViewModel implements IWebEventListener {
 
     @Override
     public void onPageFinished(WebView webView, String url) {
+        webView.getSettings().setBlockNetworkImage(false);
         mProgress.postValue(100);
     }
 
     @Override
     public void onPageStarted(WebView webView, String url) {
+        webView.getSettings().setBlockNetworkImage(true);
         if (ConstConfig.HOME_PAGE_URL.equals(url)) {
             url = ""; //hide the home page url, don't post to View
             webView.addJavascriptInterface(new Object() {
