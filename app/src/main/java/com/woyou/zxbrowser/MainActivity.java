@@ -133,10 +133,4 @@ public class MainActivity extends AppCompatActivity {
             imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
         }
     }
-
-    @Override
-    protected void onDestroy() {
-//        ZhugeSDK.getInstance().flush(getApplicationContext());
-        super.onDestroy();
-    }
 }

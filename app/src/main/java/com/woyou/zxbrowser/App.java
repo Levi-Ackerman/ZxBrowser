@@ -5,7 +5,6 @@ import android.os.Build;
 import android.webkit.WebView;
 
 import com.woyou.baseconfig.ConfigHelper;
-import com.zhuge.analysis.stat.ZhugeSDK;
 
 
 /**
@@ -18,7 +17,6 @@ public class App extends Application {
         super.onCreate();
         ConfigHelper.initApp(this);
         ConfigHelper.initDebuggable(BuildConfig.DEBUG);
-//        ZhugeSDK.getInstance().init(getApplicationContext());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG);
         }
