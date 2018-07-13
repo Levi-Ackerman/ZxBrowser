@@ -1,1 +1,10 @@
-include ':app', ':webview', ':zxutil'
+settings.include(':app')
+
+def folders = ['module','common','library']
+
+folders.each { folder->
+    file(folder).list().each { prj_name ->
+        settings.include(":${prj_name}")
+        project(":${prj_name}").projectDir = new File(folder, prj_name)
+    }
+}

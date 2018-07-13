@@ -31,5 +31,5 @@ dependencies {
     compileOnly 'ren.yale.android:cachewebviewlib:0.5.1'
     compileOnly 'com.squareup.okhttp3:okhttp:3.9.0'
     compileOnly 'com.google.code.gson:gson:2.8.0'
-    compileOnly project(':zxutil')
+    compileOnly project(':base')
 }
